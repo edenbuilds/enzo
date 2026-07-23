@@ -28,6 +28,7 @@
     "@types/node": "24.10.0",
     "eslint": "9.39.1",
     "eslint-config-next": "16.2.11",
+    "next": "16.2.11",
     "prettier": "3.6.2",
     "tsx": "4.20.6",
     "esbuild": "0.28.1",
