@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
+import type { Browser } from "playwright-core";
 import {
   SCHEMA_VERSION,
   assertSafeAuditUrl,
@@ -40,11 +41,11 @@ export async function resolveSafeTarget(input: string): Promise<{ url: URL; html
 async function createBrowser() {
   const playwright = (await import("playwright")) as unknown as {
     chromium?: {
-      launch: (options: { headless: boolean }) => Promise<import("playwright").Browser>;
+      launch: (options: { headless: boolean }) => Promise<Browser>;
     };
     default?: {
       chromium?: {
-        launch: (options: { headless: boolean }) => Promise<import("playwright").Browser>;
+        launch: (options: { headless: boolean }) => Promise<Browser>;
       };
     };
   };
