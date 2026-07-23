@@ -26,16 +26,16 @@ export default function Home() {
         <Nav />
         <div className="hero__scrim" />
         <div className="hero__content">
-          <p className="eyebrow eyebrow--light">Evidence-led product direction</p>
+          <p className="eyebrow eyebrow--light">Founder decision studio · First release</p>
           <h1>
-            Interrogate the experience.
+            Borrow world-class judgment.
             <br />
-            Extract the signal.
+            Keep the final say.
           </h1>
           <div className="hero__footer">
             <p>
-              Audit the evidence, pressure-test the strategy, and leave with a direction your team
-              can execute.
+              Enzo starts with what you have built, separates evidence from assumption, and turns
+              the next consequential decision into an artifact your team can execute.
             </p>
             <div className="hero__actions">
               <Link className="button button--accent" href="/audit/new">
@@ -58,11 +58,11 @@ export default function Home() {
       </section>
 
       <section className="statement" id="method">
-        <p className="eyebrow">The proposition</p>
-        <h2>A website can look finished and still leave the important questions unanswered.</h2>
+        <p className="eyebrow">The first operating loop</p>
+        <h2>A company can look busy and still leave its most important decision unresolved.</h2>
         <p className="statement__body">
-          Enzo treats every interface as evidence: what it claims, what it proves, where it
-          hesitates, and what the business is actually asking a person to believe.
+          Enzo treats the current experience as company evidence: what it claims, what it proves,
+          where it hesitates, and which founder decision must happen next.
         </p>
       </section>
 

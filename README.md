@@ -1,9 +1,9 @@
 <div align="center">
   <img src="plugins/enzo/assets/enzo-logo.svg" alt="Enzo" width="260" />
 
-# Interrogate the experience. Extract the signal. Ship the right thing.
+# Borrow world-class judgment. Keep the final say.
 
-Evidence-led audits, adaptive vision interviews, and implementation-ready Vision Briefs.
+Enzo is a founder decision studio. The first release turns product evidence into a defensible decision and an implementation-ready Vision Brief.
 
 [Open Enzo](https://tryenzo.vercel.app) · [Example report](https://tryenzo.vercel.app/reports/demo) · [Architecture](docs/architecture.md) · [Avenir design system](docs/design.md)
 
@@ -16,9 +16,11 @@ Evidence-led audits, adaptive vision interviews, and implementation-ready Vision
 
 ## Why Enzo
 
-Most digital audits collapse observation, taste, strategy, and recommendation into one confident opinion. Enzo keeps them separate.
+Most AI cofounders collapse research, opinion, strategy, and recommendation into one confident answer. Enzo keeps them separate.
 
-Every material finding carries evidence or declares itself as inference. Once the current experience is understood, Enzo asks only the questions that remain unresolved and turns the result into a Vision Brief that design, product, and engineering can use without translation.
+Every material finding carries evidence or declares itself as inference. Once the current experience is understood, Enzo asks only the questions that remain unresolved and turns the founder's decision into a Vision Brief that design, product, and engineering can use without translation.
+
+The long-term system adds persistent company memory, routed analytical lenses, structured council disagreement, workrooms, artifacts, and an outcome-aware Decision Ledger. Named minds are optional methodological perspectives, never celebrity role-play or claimed endorsements.
 
 ## What ships in this repository
 

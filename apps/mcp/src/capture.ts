@@ -1,7 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
-import type { Browser } from "playwright";
 import {
   SCHEMA_VERSION,
   assertSafeAuditUrl,
@@ -38,8 +37,19 @@ export async function resolveSafeTarget(input: string): Promise<{ url: URL; html
   throw new Error("Target exceeded the redirect limit.");
 }
 
-async function createBrowser(): Promise<Browser> {
-  const { chromium } = await import("playwright");
+async function createBrowser() {
+  const playwright = (await import("playwright")) as unknown as {
+    chromium?: {
+      launch: (options: { headless: boolean }) => Promise<import("playwright").Browser>;
+    };
+    default?: {
+      chromium?: {
+        launch: (options: { headless: boolean }) => Promise<import("playwright").Browser>;
+      };
+    };
+  };
+  const chromium = playwright.chromium ?? playwright.default?.chromium;
+  if (!chromium) throw new Error("Playwright Chromium is unavailable.");
   return chromium.launch({ headless: true });
 }
 
