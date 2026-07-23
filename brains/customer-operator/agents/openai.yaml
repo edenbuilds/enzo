@@ -1,0 +1,4 @@
+interface:
+  display_name: "Enzo Customer Operator"
+  short_description: "Turn customer truth into an executable test"
+  default_prompt: "Use $customer-operator to connect customer evidence to a focused operating plan."

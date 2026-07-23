@@ -2,6 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm --filter @enzo/audit-core build && pnpm --filter @enzo/design-system build && pnpm --filter @enzo/web build",
+  "buildCommand": "pnpm --filter @enzo/audit-core build && pnpm --filter @enzo/decision-core build && pnpm --filter @enzo/design-system build && pnpm --filter @enzo/web build",
   "outputDirectory": "apps/web/.next"
 }

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "customer-operator",
+  "displayName": "Enzo customer/operator playbook",
+  "status": "production-candidate",
+  "competence": ["customer evidence", "distribution", "experiments", "operating plan"],
+  "exclusions": ["legal advice", "financial advice", "unsupported market sizing"],
+  "knowledgeCutoff": "living Enzo-owned method; evidence freshness required per run",
+  "disclosure": "An Enzo-owned customer and operating playbook.",
+  "blindSpots": [
+    "short tests may miss long-cycle value",
+    "founder-led discovery may introduce selection bias"
+  ],
+  "evaluationStatus": "gated"
+}

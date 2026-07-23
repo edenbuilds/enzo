@@ -1,9 +1,11 @@
 ---
 name: enzo
-description: Audit websites, landing pages, web applications, screenshots, repositories, and digital products across content, UX, visual design, brand, positioning, business model, accessibility, trust, and conversion; then run an adaptive vision interview and produce an evidence-linked Vision Brief. Use when asked to audit, critique, diagnose, reposition, redesign, compare, or clarify the future direction of a digital experience.
+description: Compatibility entry point for Enzo's evidence-led audit and founder decision workflows. Use for experience audits, Vision Briefs, or consequential product decisions; route new founder-decision work through enzo-core while preserving the original audit modes.
 ---
 
 # Enzo
+
+For founder decisions, invoke `enzo-core` and follow its context → reality scan → council → founder choice → artifact → ledger workflow. Continue below for the original experience audit and Vision Brief workroom.
 
 Turn an existing digital experience and its surrounding context into an evidence-backed diagnosis and a direction another designer, strategist, or engineer can execute.
 

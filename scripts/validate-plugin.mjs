@@ -18,4 +18,18 @@ for (const path of [
 }
 if (/\[TODO/i.test(JSON.stringify(manifest)))
   throw new Error("Plugin contains a TODO placeholder.");
+for (const skill of [
+  "enzo-core",
+  "founder-intake",
+  "company-context",
+  "reality-scan",
+  "brain-router",
+  "council-engine",
+  "decision-room",
+  "decision-ledger",
+  "artifact-engine",
+]) {
+  if (!existsSync(`${root}/skills/${skill}/SKILL.md`))
+    throw new Error(`Plugin is missing required skill: ${skill}`);
+}
 console.log("Plugin validation passed.");

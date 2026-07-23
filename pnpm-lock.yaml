@@ -43,6 +43,9 @@ importers:
       "@enzo/audit-core":
         specifier: workspace:*
         version: link:../../packages/audit-core
+      "@enzo/decision-core":
+        specifier: workspace:*
+        version: link:../../packages/decision-core
       "@modelcontextprotocol/sdk":
         specifier: 1.29.0
         version: 1.29.0(zod@4.4.3)
@@ -80,6 +83,9 @@ importers:
       "@enzo/audit-core":
         specifier: workspace:*
         version: link:../../packages/audit-core
+      "@enzo/decision-core":
+        specifier: workspace:*
+        version: link:../../packages/decision-core
       "@enzo/design-system":
         specifier: workspace:*
         version: link:../../packages/design-system
@@ -122,6 +128,15 @@ importers:
         version: 4.4.3
 
   packages/config: {}
+
+  packages/decision-core:
+    dependencies:
+      "@enzo/audit-core":
+        specifier: workspace:*
+        version: link:../audit-core
+      zod:
+        specifier: 4.4.3
+        version: 4.4.3
 
   packages/design-system:
     devDependencies:

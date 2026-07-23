@@ -38,11 +38,11 @@ export default function Home() {
               the next consequential decision into an artifact your team can execute.
             </p>
             <div className="hero__actions">
-              <Link className="button button--accent" href="/audit/new">
-                Start an audit
+              <Link className="button button--accent" href="/home">
+                Enter the Decision Studio
               </Link>
-              <Link className="text-link text-link--light" href="/reports/demo">
-                Read an example report
+              <Link className="text-link text-link--light" href="/audit/new">
+                Run the experience audit
               </Link>
             </div>
           </div>
@@ -102,9 +102,9 @@ export default function Home() {
 
       <section className="closing-cta">
         <p className="eyebrow">The next move</p>
-        <h2>Put the current experience under honest examination.</h2>
-        <Link className="button button--primary" href="/audit/new">
-          Start the interrogation
+        <h2>Make the decision. Preserve the reasoning. Review the outcome.</h2>
+        <Link className="button button--primary" href="/home">
+          Enter the public demo
         </Link>
       </section>
     </main>

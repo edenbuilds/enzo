@@ -1,0 +1,4 @@
+interface:
+  display_name: "Brain Builder"
+  short_description: "Build provenance-safe lens packs"
+  default_prompt: "Use $brain-builder to create a methodological lens pack with provenance and evaluations."

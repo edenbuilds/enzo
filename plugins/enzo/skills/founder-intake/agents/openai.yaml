@@ -1,0 +1,4 @@
+interface:
+  display_name: "Founder Intake"
+  short_description: "Capture founder constraints and objectives"
+  default_prompt: "Use $founder-intake to capture the founder context needed for this decision."

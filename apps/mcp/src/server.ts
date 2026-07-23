@@ -1,7 +1,8 @@
 import cors from "cors";
 import express from "express";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
-import { resolveOwnerId } from "./auth.js";
+import { resolvePrincipal } from "./auth.js";
+import { decisionRepositoryFor } from "./decision-repository.js";
 import { createToolServer } from "./tools.js";
 
 export const app = express();
@@ -25,15 +26,15 @@ app.get("/.well-known/oauth-protected-resource", (_request, response) => {
 });
 
 app.post("/mcp", async (request, response) => {
-  const ownerId = await resolveOwnerId(request);
-  if (!ownerId) {
+  const principal = await resolvePrincipal(request);
+  if (!principal) {
     response
       .status(401)
       .set("WWW-Authenticate", 'Bearer resource_metadata="/.well-known/oauth-protected-resource"')
       .json({ error: "authentication_required" });
     return;
   }
-  const server = createToolServer(ownerId);
+  const server = createToolServer(principal.ownerId, decisionRepositoryFor(principal));
   const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
   response.on("close", () => {
     void transport.close();

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Munger Inversion"
+  short_description: "Expose incentives and avoidable failure"
+  default_prompt: "Use $munger-inversion to invert this decision and inspect incentives, failure modes, and second-order effects."

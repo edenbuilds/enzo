@@ -7,6 +7,9 @@ export default defineConfig({
       "@enzo/audit-core": fileURLToPath(
         new URL("./packages/audit-core/src/index.ts", import.meta.url),
       ),
+      "@enzo/decision-core": fileURLToPath(
+        new URL("./packages/decision-core/src/index.ts", import.meta.url),
+      ),
     },
   },
   test: {

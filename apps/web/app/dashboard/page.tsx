@@ -33,6 +33,14 @@ export default async function Dashboard() {
           </div>
         ) : null}
         <div className="dashboard-grid">
+          <Link className="project-card project-card--featured" href="/home">
+            <div className="project-card__top">
+              <span className="tag">Decision ready</span>
+              <span className="eyebrow">Founder studio</span>
+            </div>
+            <h2>What should this product promise first?</h2>
+            <p>Review the evidence, challenge three independent lenses, and record your choice.</p>
+          </Link>
           <Link className="project-card project-card--featured" href="/projects/demo">
             <div className="project-card__top">
               <span className="tag">Audit complete</span>
