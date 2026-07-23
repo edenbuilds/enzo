@@ -66,6 +66,13 @@ pnpm dev:mcp
 curl http://localhost:8787/health
 ```
 
+Production deployment keeps the monorepo root as the upload boundary so workspace packages resolve:
+
+```bash
+vercel link --yes --project tryenzo-mcp
+vercel deploy --prod --local-config vercel.mcp.json
+```
+
 To enable browser screenshots:
 
 ```bash
