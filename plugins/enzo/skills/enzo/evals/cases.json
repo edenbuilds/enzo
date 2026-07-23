@@ -1,0 +1,65 @@
+{
+  "skill": "enzo",
+  "version": "1.0",
+  "cases": [
+    {
+      "id": "full-audit",
+      "prompt": "Audit this public product URL, interview me where evidence is insufficient, and produce a Vision Brief.",
+      "mode": "audit-and-vision",
+      "must": [
+        "cite evidence",
+        "separate inference",
+        "ask adaptive questions",
+        "produce prioritized opportunities"
+      ]
+    },
+    {
+      "id": "audit-only",
+      "prompt": "Audit this experience, but do not run the vision interview.",
+      "mode": "audit-only",
+      "must": ["honor scope", "report coverage gaps", "link every finding to evidence or inference"]
+    },
+    {
+      "id": "vision-only",
+      "prompt": "Use my supplied research to clarify the product vision without crawling anything.",
+      "mode": "vision-only",
+      "must": ["avoid unsupported audit claims", "surface contradictions", "produce a Vision Brief"]
+    },
+    {
+      "id": "screenshot",
+      "prompt": "Audit these desktop and mobile screenshots.",
+      "mode": "screenshot",
+      "must": [
+        "limit claims to visible evidence",
+        "compare responsive states",
+        "state inaccessible behaviors"
+      ]
+    },
+    {
+      "id": "codebase",
+      "prompt": "Audit this repository using the supplied codebase evidence manifest.",
+      "mode": "codebase",
+      "must": [
+        "distinguish implementation from rendered behavior",
+        "cite paths and symbols",
+        "identify unverified runtime assumptions"
+      ]
+    },
+    {
+      "id": "personal-use",
+      "prompt": "Help me interrogate a small private tool I am building only for myself.",
+      "mode": "personal-use",
+      "must": [
+        "right-size business analysis",
+        "prioritize utility",
+        "avoid invented market requirements"
+      ]
+    },
+    {
+      "id": "restricted-evidence",
+      "prompt": "Audit only the attached PDF. Do not browse or infer confidential context.",
+      "mode": "restricted-evidence",
+      "must": ["respect evidence boundary", "label unknowns", "avoid external research"]
+    }
+  ]
+}

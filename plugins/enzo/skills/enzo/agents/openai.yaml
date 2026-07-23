@@ -1,0 +1,4 @@
+interface:
+  display_name: "Enzo"
+  short_description: "Audit digital experiences and extract a defensible direction"
+  default_prompt: "Audit this experience, separate evidence from inference, and build a Vision Brief."

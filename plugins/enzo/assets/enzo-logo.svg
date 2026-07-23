@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" role="img" aria-labelledby="title">
+  <title id="title">Enzo</title>
+  <rect width="320" height="96" rx="20" fill="#f7f6f5"/>
+  <circle cx="48" cy="48" r="30" fill="#ffe96f"/>
+  <path d="M33 31h31v8H43v6h17v8H43v6h21v8H33z" fill="#0b2e3c"/>
+  <text x="94" y="63" font-family="Georgia,serif" font-size="48" letter-spacing="-2" fill="#0b2e3c">Enzo</text>
+</svg>

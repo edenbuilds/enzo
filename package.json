@@ -1,0 +1,37 @@
+{
+  "name": "enzo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Interrogate digital experiences, extract evidence, and ship a defensible direction.",
+  "license": "MIT",
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "build": "pnpm --filter './packages/**' build && pnpm --filter './apps/**' build",
+    "dev": "pnpm --parallel --filter './apps/**' dev",
+    "dev:web": "pnpm --filter @enzo/web dev",
+    "dev:mcp": "pnpm --filter @enzo/mcp dev",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "validate:skill": "node scripts/validate-skill.mjs",
+    "validate:plugin": "node scripts/validate-plugin.mjs",
+    "validate": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm validate:skill && pnpm validate:plugin"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "@types/node": "24.10.0",
+    "eslint": "9.39.1",
+    "eslint-config-next": "16.2.11",
+    "prettier": "3.6.2",
+    "tsx": "4.20.6",
+    "esbuild": "0.28.1",
+    "typescript": "5.9.3",
+    "vitest": "4.1.10"
+  }
+}

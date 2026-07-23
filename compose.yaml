@@ -1,0 +1,13 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    env_file: .env.local
+    ports: ["3000:3000"]
+  mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile.mcp
+    env_file: .env.local
+    ports: ["8787:8787"]
