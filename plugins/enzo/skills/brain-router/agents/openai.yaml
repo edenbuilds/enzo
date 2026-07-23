@@ -1,0 +1,4 @@
+interface:
+  display_name: "Brain Router"
+  short_description: "Select the smallest useful council"
+  default_prompt: "Use $brain-router to select and justify the smallest useful council for this decision."

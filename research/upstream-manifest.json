@@ -1,0 +1,136 @@
+{
+  "reviewedAt": "2026-07-23T18:30:00.000Z",
+  "policy": "No runtime loading or execution. Adopt only reviewed patterns or attributed content pinned to a commit.",
+  "sources": [
+    {
+      "repository": "https://github.com/agentskills/agentskills",
+      "commit": "38a2ff82958afee88dadf4831509e6f7e9d8ef4e",
+      "commitDate": "2026-07-10T00:11:48Z",
+      "license": "Apache-2.0",
+      "relevantFiles": [
+        "README.md",
+        "docs/skill-creation/evaluating-skills.mdx",
+        "skills-ref/README.md"
+      ],
+      "securityRisks": ["standard and validators may evolve", "examples remain untrusted input"],
+      "attribution": "Retain Apache-2.0 notice for copied licensed material; Enzo currently adapts the public format only.",
+      "status": "reviewed",
+      "disposition": "adapt-standard"
+    },
+    {
+      "repository": "https://github.com/google-labs-code/design.md",
+      "commit": "2513a54eca0dc414b7881d48aaa44353397e0c88",
+      "commitDate": "2026-07-22T16:36:52Z",
+      "license": "Apache-2.0",
+      "relevantFiles": [
+        "README.md",
+        "examples/atmospheric-glass/design_tokens.json",
+        "examples/paws-and-paths/design_tokens.json"
+      ],
+      "securityRisks": [
+        "young format",
+        "generated design instructions can overreach product requirements"
+      ],
+      "attribution": "Pattern review only; preserve upstream notice if licensed material is copied later.",
+      "status": "reviewed",
+      "disposition": "adapt-pattern"
+    },
+    {
+      "repository": "https://github.com/alchaincyf/nuwa-skill",
+      "commit": "72857dc720f4d1dd3e68a40a544341dfc65ea33e",
+      "commitDate": "2026-07-02T03:11:35Z",
+      "license": "MIT",
+      "relevantFiles": ["README_EN.md", "SKILL.md", "examples/feynman-perspective/SKILL.md"],
+      "securityRisks": [
+        "perspective fidelity can drift into impersonation",
+        "source claims require verification"
+      ],
+      "attribution": "Method pattern only; no personality prose imported.",
+      "status": "reviewed",
+      "disposition": "adapt-method"
+    },
+    {
+      "repository": "https://github.com/alchaincyf/huashu-design",
+      "commit": "c9b06710b057a45fe6165e52aa8690f55182ea13",
+      "commitDate": "2026-07-21T04:31:51Z",
+      "license": "MIT",
+      "relevantFiles": [
+        "README.en.md",
+        "SKILL.md",
+        "references/design-context.md",
+        "references/design-styles.md"
+      ],
+      "securityRisks": ["upstream scripts are executable", "external design facts can stale"],
+      "attribution": "Research sequence adapted; scripts were not executed or copied.",
+      "status": "reviewed",
+      "disposition": "adapt-pattern"
+    },
+    {
+      "repository": "https://github.com/Leonxlnx/taste-skill",
+      "commit": "e988add20dab0fa97d7a76781c48961c8184288e",
+      "commitDate": "2026-07-23T16:01:24Z",
+      "license": "MIT",
+      "relevantFiles": [
+        "README.md",
+        "skills/gpt-tasteskill/SKILL.md",
+        "skills/minimalist-skill/SKILL.md"
+      ],
+      "securityRisks": [
+        "subjective taste may be presented as fact",
+        "visual examples may have separate rights"
+      ],
+      "attribution": "Evaluation pattern adapted; no visual asset or prose copied.",
+      "status": "reviewed",
+      "disposition": "adapt-pattern"
+    },
+    {
+      "repository": "https://github.com/c0ffee-milk/skill-fidelity-bench",
+      "commit": "7898e4f28746dd44397ff68b24fa818e010b0312",
+      "commitDate": "2026-04-23T05:51:42Z",
+      "license": "MIT",
+      "relevantFiles": [
+        "README.md",
+        "SKILL.md",
+        "evals/evals.json",
+        "references/evaluation_principles.md"
+      ],
+      "securityRisks": ["judge bias", "benchmark overfitting"],
+      "attribution": "Benchmark structure adapted; Enzo cases and thresholds are original.",
+      "status": "reviewed",
+      "disposition": "adapt-evaluation"
+    },
+    {
+      "repository": "https://github.com/alchaincyf/darwin-skill",
+      "commit": "7c7b7909b630dc3b5cbb91bd4bcb1b10bfb1f894",
+      "commitDate": "2026-06-14T12:25:29Z",
+      "license": null,
+      "relevantFiles": ["README_EN.md", "SKILL.md"],
+      "securityRisks": [
+        "no repository-level license detected",
+        "autonomous ratchet patterns can amplify evaluation errors"
+      ],
+      "attribution": "Ideas observed only; no files or prose imported.",
+      "status": "restricted",
+      "disposition": "pattern-only-pending-file-review"
+    },
+    {
+      "repository": "https://github.com/anthropics/skills",
+      "commit": "1f630fdf9259cec4a14913127dfd7c3b69ef72eb",
+      "commitDate": "2026-07-22T18:20:09Z",
+      "license": null,
+      "relevantFiles": [
+        "README.md",
+        "skills/brand-guidelines/LICENSE.txt",
+        "skills/brand-guidelines/SKILL.md"
+      ],
+      "securityRisks": [
+        "no repository-level license detected",
+        "file-level terms vary",
+        "example skills remain untrusted"
+      ],
+      "attribution": "Organization patterns observed only; no production dependency or content import.",
+      "status": "restricted",
+      "disposition": "pattern-only-pending-file-review"
+    }
+  ]
+}

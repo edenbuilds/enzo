@@ -1,0 +1,4 @@
+interface:
+  display_name: "Council Engine"
+  short_description: "Run independent lenses and disagreement"
+  default_prompt: "Use $council-engine to run independent analyses and preserve meaningful dissent."

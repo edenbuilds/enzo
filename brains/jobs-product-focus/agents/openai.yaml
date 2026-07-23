@@ -1,0 +1,4 @@
+interface:
+  display_name: "Jobs Product Focus"
+  short_description: "Protect product coherence and first promise"
+  default_prompt: "Use $jobs-product-focus to test this product promise for focus, coherence, and user value."

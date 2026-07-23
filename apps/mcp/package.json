@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@enzo/audit-core": "workspace:*",
+    "@enzo/decision-core": "workspace:*",
     "@modelcontextprotocol/sdk": "1.29.0",
     "@supabase/supabase-js": "2.110.8",
     "cors": "2.8.5",

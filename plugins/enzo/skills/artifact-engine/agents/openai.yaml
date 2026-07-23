@@ -1,0 +1,4 @@
+interface:
+  display_name: "Artifact Engine"
+  short_description: "Create editable decision artifacts"
+  default_prompt: "Use $artifact-engine to create an editable decision memo and 30-day action plan."

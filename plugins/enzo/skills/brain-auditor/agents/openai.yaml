@@ -1,0 +1,4 @@
+interface:
+  display_name: "Brain Auditor"
+  short_description: "Audit lens safety and fidelity"
+  default_prompt: "Use $brain-auditor to evaluate this lens pack for provenance, overreach, and fidelity."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reality Scan"
+  short_description: "Separate evidence from assumptions"
+  default_prompt: "Use $reality-scan to audit the available evidence before making a recommendation."

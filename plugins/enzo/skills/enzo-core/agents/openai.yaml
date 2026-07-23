@@ -1,0 +1,4 @@
+interface:
+  display_name: "Enzo Core"
+  short_description: "Route evidence-backed founder decisions"
+  default_prompt: "Use $enzo-core to turn this founder question into an evidence-backed decision workflow."

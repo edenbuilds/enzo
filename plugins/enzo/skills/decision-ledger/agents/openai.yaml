@@ -1,0 +1,4 @@
+interface:
+  display_name: "Decision Ledger"
+  short_description: "Track decisions through outcome review"
+  default_prompt: "Use $decision-ledger to record this decision and schedule its outcome review."

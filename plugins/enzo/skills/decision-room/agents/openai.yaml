@@ -1,0 +1,4 @@
+interface:
+  display_name: "Decision Room"
+  short_description: "Frame tradeoffs for founder choice"
+  default_prompt: "Use $decision-room to frame the options and capture the founder's final choice."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Company Context"
+  short_description: "Structure a living company model"
+  default_prompt: "Use $company-context to structure the company context and expose missing evidence."

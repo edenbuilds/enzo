@@ -10,11 +10,15 @@ flowchart LR
     MCP --> Capture["Safe Playwright capture"]
     MCP --> Model["OpenAI Responses API"]
     Capture --> Evidence["Versioned evidence ledger"]
-    Evidence --> Audit["Audit and interview engine"]
-    Model --> Audit
-    Audit --> Brief["Audit report + Vision Brief"]
+    Evidence --> Audit["Reality scan + audit engine"]
+    Model --> Council["Independent lens passes"]
+    Audit --> Council
+    Council --> Disagreement["Sealed disagreement + synthesis"]
+    Disagreement --> Choice["Founder choice"]
+    Choice --> Artifact["Decision Memo + 30-day plan"]
+    Artifact --> Ledger["Decision Ledger + outcome review"]
 ```
 
-The audit core is deterministic and provider-independent. Model enrichment is optional; without an API key, Enzo runs in demo mode and still validates contracts, interview routing, exports, and plugin behavior.
+The audit core remains backward compatible. The decision core is provider-independent: fixture execution powers the non-persistent public demo, while hosted execution uses independent Responses API calls and ownership-scoped Supabase repositories. Authenticated production fails closed when private persistence is unavailable.
 
 The hosted service accepts public HTTPS evidence only. URL resolution is checked before every redirect and browser request to block private networks. Authenticated browsing and private hosted-repository ingestion are intentionally outside v1.

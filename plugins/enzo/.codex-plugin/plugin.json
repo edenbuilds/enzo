@@ -1,7 +1,7 @@
 {
   "name": "enzo",
-  "version": "0.1.0",
-  "description": "Interrogate digital experiences, trace findings to evidence, and synthesize a defensible Vision Brief.",
+  "version": "0.1.0+codex.20260723183754",
+  "description": "Turn founder context and evidence into a routed council, explicit decision, editable artifacts, and outcome review.",
   "author": {
     "name": "Omkar Sonawane",
     "email": "omkar1sonawane@gmail.com",
@@ -10,13 +10,13 @@
   "homepage": "https://tryenzo.vercel.app",
   "repository": "https://github.com/edenbuilds/enzo",
   "license": "MIT",
-  "keywords": ["audit", "brand", "product", "positioning", "ux", "vision", "strategy"],
+  "keywords": ["founder", "decision", "council", "audit", "product", "positioning", "strategy"],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Enzo",
-    "shortDescription": "Evidence-led experience audits and Vision Briefs",
-    "longDescription": "Audit websites, products, screenshots, and codebases across clarity, UX, brand, positioning, conversion, accessibility, and trust. Enzo separates observation from inference, runs an adaptive vision interview, and produces an implementation-ready Vision Brief.",
+    "shortDescription": "Evidence-led founder decisions and outcome reviews",
+    "longDescription": "Move from company context and a reality scan through independent methodological lenses, explicit disagreement, founder choice, editable decision artifacts, and calibrated outcome review. The original experience audit and Vision Brief remain available as Enzo's product workroom.",
     "developerName": "edenbuilds",
     "category": "Developer Tools",
     "capabilities": ["Interactive", "Read", "Write"],
@@ -24,9 +24,9 @@
     "privacyPolicyURL": "https://github.com/edenbuilds/enzo/blob/main/PRIVACY.md",
     "termsOfServiceURL": "https://github.com/edenbuilds/enzo/blob/main/TERMS.md",
     "defaultPrompt": [
-      "Audit this experience and separate evidence from inference.",
-      "Interrogate this product direction and build a Vision Brief.",
-      "Find the highest-leverage positioning and conversion gaps."
+      "Run the complete Enzo decision workflow for what this product should promise first.",
+      "Audit this experience, separate evidence from inference, and route the smallest useful council.",
+      "Turn my founder choice into a cited Decision Memo, 30-day plan, and outcome review."
     ],
     "brandColor": "#0B2E3C",
     "composerIcon": "./assets/enzo-icon.svg",

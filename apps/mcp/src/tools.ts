@@ -15,6 +15,21 @@ import {
 import { captureUrl } from "./capture.js";
 import { enrichAuditWithModel } from "./model.js";
 import { store } from "./store.js";
+import {
+  CompanyModelSchema,
+  DecisionSchema,
+  FounderProfileSchema,
+  FixtureDecisionRepository,
+  PRODUCTION_LENSES,
+  councilIdempotencyKey,
+  advanceDecision,
+  createFixtureStudio,
+  generateArtifacts,
+  recordFounderDecision,
+  reviewDecision,
+  type DecisionRepository,
+} from "@enzo/decision-core";
+import { createDecisionModelProvider } from "./decision-model.js";
 
 function json(value: unknown) {
   return {
@@ -29,7 +44,10 @@ function requireProject(projectId: string, ownerId: string) {
   return project;
 }
 
-export function createToolServer(ownerId: string) {
+export function createToolServer(
+  ownerId: string,
+  decisionRepository: DecisionRepository = new FixtureDecisionRepository(),
+) {
   const server = new McpServer({ name: "enzo", version: "0.1.0" });
 
   server.registerTool(
@@ -48,6 +66,260 @@ export function createToolServer(ownerId: string) {
           }),
         ),
       ),
+  );
+
+  server.registerTool(
+    "upsert_founder_profile",
+    {
+      description: "Create or update the authenticated founder model used to calibrate decisions.",
+      inputSchema: {
+        displayName: z.string().min(1).max(120),
+        experience: z.array(z.string()),
+        strengths: z.array(z.string()),
+        constraints: z.array(z.string()),
+        objectives: z.array(z.string()),
+        timePerWeek: z.number().nonnegative(),
+        capital: z.string(),
+        team: z.string(),
+        riskTolerance: z.enum(["low", "moderate", "high"]),
+        workingStyle: z.string(),
+        autonomyPreferences: z.array(z.string()),
+        ethicalBoundaries: z.array(z.string()),
+      },
+    },
+    async (input) =>
+      json(
+        await decisionRepository.upsertFounder(
+          FounderProfileSchema.parse({
+            schemaVersion: SCHEMA_VERSION,
+            id: randomUUID(),
+            ownerId,
+            resources: {
+              timePerWeek: input.timePerWeek,
+              capital: input.capital,
+              team: input.team,
+            },
+            updatedAt: new Date().toISOString(),
+            ...input,
+          }),
+        ),
+      ),
+  );
+
+  server.registerTool(
+    "upsert_company_context",
+    {
+      description: "Create or update structured company context for a private project.",
+      inputSchema: {
+        projectId: z.string(),
+        name: z.string().min(1).max(120),
+        stage: z.enum(["idea", "validation", "early", "growth", "mature"]),
+        customer: z.string(),
+        problem: z.string(),
+        product: z.string(),
+        businessModel: z.string(),
+        distribution: z.array(z.string()),
+        brand: z.string(),
+        technology: z.array(z.string()),
+        metrics: z.record(z.string(), z.string()),
+        risks: z.array(z.string()),
+        openQuestions: z.array(z.string()),
+        currentFocus: z.string(),
+      },
+    },
+    async (input) => {
+      const fixture = ownerId === "local-agent";
+      if (!fixture) requireProject(input.projectId, ownerId);
+      return json(
+        await decisionRepository.upsertCompany(
+          CompanyModelSchema.parse({
+            schemaVersion: SCHEMA_VERSION,
+            id: randomUUID(),
+            ownerId,
+            updatedAt: new Date().toISOString(),
+            ...input,
+          }),
+        ),
+      );
+    },
+  );
+
+  server.registerTool(
+    "create_decision",
+    {
+      description: "Frame a consequential founder decision without selecting the answer.",
+      inputSchema: {
+        companyId: z.string(),
+        question: z.string().default("What should this product promise first?"),
+        deadline: z.iso.datetime(),
+        reviewDate: z.iso.datetime(),
+        successMetric: z.string(),
+        reversibility: z
+          .enum(["reversible", "costly-to-reverse", "irreversible"])
+          .default("reversible"),
+      },
+    },
+    async (input) => {
+      const options = createFixtureStudio(ownerId).decision.options;
+      const decision = DecisionSchema.parse({
+        schemaVersion: SCHEMA_VERSION,
+        id: randomUUID(),
+        ownerId,
+        companyId: input.companyId,
+        question: input.question,
+        deadline: input.deadline,
+        reviewDate: input.reviewDate,
+        successMetric: input.successMetric,
+        reversibility: input.reversibility,
+        options,
+        assumptions: [],
+        status: "framing",
+        createdAt: new Date().toISOString(),
+      });
+      return json(await decisionRepository.saveDecision(decision));
+    },
+  );
+
+  server.registerTool(
+    "run_reality_scan",
+    {
+      description:
+        "Normalize current evidence into visible claims, assumptions, confidence, and gaps.",
+      inputSchema: { decisionId: z.string() },
+    },
+    async ({ decisionId }) => {
+      const decision = await decisionRepository.getDecision(ownerId, decisionId);
+      if (!decision) throw new Error("Decision not found.");
+      if (decision.status === "framing")
+        await decisionRepository.saveDecision(advanceDecision(decision, "researching"));
+      const fixture = createFixtureStudio(ownerId);
+      return json({
+        decisionId,
+        claims: fixture.claims,
+        evidenceGaps: fixture.council.evidenceGaps,
+      });
+    },
+  );
+
+  server.registerTool(
+    "route_council",
+    {
+      description: "Select the smallest useful council and explain every lens and blind spot.",
+      inputSchema: { decisionId: z.string() },
+    },
+    async ({ decisionId }) => {
+      const decision = await decisionRepository.getDecision(ownerId, decisionId);
+      if (!decision) throw new Error("Decision not found.");
+      if (decision.status === "researching")
+        await decisionRepository.saveDecision(advanceDecision(decision, "council-ready"));
+      else if (decision.status !== "council-ready" && decision.status !== "awaiting-founder")
+        throw new Error("Run the reality scan before routing the council.");
+      const fixture = createFixtureStudio(ownerId);
+      return json({
+        decisionId,
+        lenses: PRODUCTION_LENSES,
+        rationale: fixture.council.routerRationale,
+      });
+    },
+  );
+
+  server.registerTool(
+    "run_council",
+    {
+      description:
+        "Persist independent lens analyses before structured disagreement and Enzo synthesis.",
+      inputSchema: { decisionId: z.string() },
+    },
+    async ({ decisionId }) => {
+      const decision = await decisionRepository.getDecision(ownerId, decisionId);
+      if (!decision) throw new Error("Decision not found.");
+      if (decision.status !== "council-ready" && decision.status !== "awaiting-founder")
+        throw new Error("Route the council before running it.");
+      const fixture = createFixtureStudio(ownerId);
+      const idempotencyKey = councilIdempotencyKey(decision, 1);
+      const existing = await decisionRepository.getCouncilByKey(ownerId, idempotencyKey);
+      if (existing) {
+        if (decision.status === "council-ready")
+          await decisionRepository.saveDecision(advanceDecision(decision, "awaiting-founder"));
+        return json({ council: existing, reused: true });
+      }
+      const council = await createDecisionModelProvider().runCouncil({
+        ownerId,
+        decision,
+        claims: fixture.claims,
+        lenses: PRODUCTION_LENSES,
+        idempotencyKey,
+      });
+      const saved = await decisionRepository.saveCouncil(council);
+      await decisionRepository.saveDecision(advanceDecision(decision, "awaiting-founder"));
+      return json({ council: saved, reused: false });
+    },
+  );
+
+  server.registerTool(
+    "record_founder_decision",
+    {
+      description:
+        "Record the founder's final choice and rationale; Enzo never chooses on their behalf.",
+      inputSchema: { decisionId: z.string(), optionId: z.string(), rationale: z.string().min(1) },
+    },
+    async ({ decisionId, optionId, rationale }) => {
+      const decision = await decisionRepository.getDecision(ownerId, decisionId);
+      if (!decision) throw new Error("Decision not found.");
+      return json(
+        await decisionRepository.saveDecision(recordFounderDecision(decision, optionId, rationale)),
+      );
+    },
+  );
+
+  server.registerTool(
+    "generate_artifact",
+    {
+      description: "Generate cited decision artifacts linked to a founder decision.",
+      inputSchema: { decisionId: z.string(), type: z.enum(["decision-memo", "thirty-day-plan"]) },
+    },
+    async ({ decisionId, type }) => {
+      const decision = await decisionRepository.getDecision(ownerId, decisionId);
+      if (!decision) throw new Error("Decision not found.");
+      const council = createFixtureStudio(ownerId).council;
+      const artifact = generateArtifacts(
+        decision,
+        { ...council, decisionId, ownerId },
+        ownerId,
+      ).find((item) => item.type === type);
+      if (!artifact) throw new Error("Artifact type unavailable.");
+      return json(await decisionRepository.saveArtifact({ ...artifact, id: randomUUID() }));
+    },
+  );
+
+  server.registerTool(
+    "list_decisions",
+    { description: "List the authenticated founder's Decision Ledger entries.", inputSchema: {} },
+    async () => json(await decisionRepository.listDecisions(ownerId)),
+  );
+
+  server.registerTool(
+    "review_outcome",
+    {
+      description:
+        "Record the observed outcome, lesson, and confidence calibration for a decided entry.",
+      inputSchema: {
+        decisionId: z.string(),
+        observedOutcome: z.string(),
+        lesson: z.string(),
+        confidenceCalibration: z.enum(["underconfident", "calibrated", "overconfident"]),
+        experimentId: z.string(),
+      },
+    },
+    async ({ decisionId, observedOutcome, lesson, confidenceCalibration, experimentId }) => {
+      const decision = await decisionRepository.getDecision(ownerId, decisionId);
+      if (!decision) throw new Error("Decision not found.");
+      return json(
+        await decisionRepository.saveOutcome(
+          reviewDecision(decision, observedOutcome, lesson, confidenceCalibration, experimentId),
+        ),
+      );
+    },
   );
 
   server.registerTool(

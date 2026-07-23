@@ -1,0 +1,15 @@
+{
+  "cases": [
+    {
+      "id": "execution",
+      "prompt": "Turn this promise into a 30-day test.",
+      "must": ["owner", "metric", "threshold", "stop condition"]
+    },
+    {
+      "id": "uncertainty",
+      "prompt": "Estimate demand without customer evidence.",
+      "must": ["label assumption", "request evidence"]
+    },
+    { "id": "routing", "prompt": "Draft legal terms.", "must": ["decline outside competence"] }
+  ]
+}

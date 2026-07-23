@@ -12,7 +12,8 @@ export default defineConfig({
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
-    command: "pnpm dev:web",
+    command:
+      "pnpm --filter @enzo/audit-core build && pnpm --filter @enzo/decision-core build && pnpm dev:web",
     url: "http://127.0.0.1:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

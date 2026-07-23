@@ -1,0 +1,4 @@
+interface:
+  display_name: "Visual Intelligence"
+  short_description: "Evaluate visual evidence with provenance"
+  default_prompt: "Use $visual-intelligence to assess these visual references as cited evidence."

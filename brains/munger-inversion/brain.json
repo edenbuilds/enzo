@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "munger-inversion",
+  "displayName": "Munger inversion and incentives lens",
+  "status": "production-candidate",
+  "competence": ["inversion", "incentives", "failure modes", "second-order effects"],
+  "exclusions": ["investment advice", "legal advice", "people impersonation"],
+  "knowledgeCutoff": "public historical material through 2023-11-28",
+  "disclosure": "A methodological perspective derived from public material. It is not the person, an endorsement, or an official representation.",
+  "blindSpots": ["can overweight downside", "may delay reversible learning"],
+  "evaluationStatus": "gated"
+}
