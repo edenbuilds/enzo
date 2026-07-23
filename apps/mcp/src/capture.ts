@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
-import { chromium, type Browser } from "playwright";
+import type { Browser } from "playwright";
 import {
   SCHEMA_VERSION,
   assertSafeAuditUrl,
@@ -39,6 +39,7 @@ export async function resolveSafeTarget(input: string): Promise<{ url: URL; html
 }
 
 async function createBrowser(): Promise<Browser> {
+  const { chromium } = await import("playwright");
   return chromium.launch({ headless: true });
 }
 
