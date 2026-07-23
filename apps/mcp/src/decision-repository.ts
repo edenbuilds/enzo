@@ -7,6 +7,8 @@ import {
   FixtureDecisionRepository,
   FounderProfileSchema,
   OutcomeReviewSchema,
+  SavedPlaybookSchema,
+  WorkroomRunSchema,
   type Artifact,
   type CompanyModel,
   type CouncilRun,
@@ -14,7 +16,9 @@ import {
   type DecisionRepository,
   type FounderProfile,
   type OutcomeReview,
+  type SavedPlaybook,
   type StudioSnapshot,
+  type WorkroomRun,
 } from "@enzo/decision-core";
 import type { AuthPrincipal } from "./auth.js";
 
@@ -230,6 +234,58 @@ export class SupabaseDecisionRepository implements DecisionRepository {
   }
   async getSnapshot(): Promise<StudioSnapshot> {
     throw new Error("Authenticated snapshots are assembled by route-specific queries.");
+  }
+  async saveWorkroomRun(run: WorkroomRun) {
+    if (run.ownerId !== this.ownerId) throw new Error("Owner mismatch.");
+    await this.requireData(
+      this.client
+        .from("workroom_runs")
+        .upsert({
+          id: run.id,
+          company_id: run.companyId,
+          user_id: this.ownerId,
+          workroom_id: run.workroomId,
+          status: run.status,
+          body: run,
+        })
+        .select()
+        .single(),
+    );
+    return WorkroomRunSchema.parse(run);
+  }
+  async getWorkroomRun(ownerId: string, runId: string) {
+    if (ownerId !== this.ownerId) return null;
+    const { data, error } = await this.client
+      .from("workroom_runs")
+      .select("body")
+      .eq("id", runId)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return data ? WorkroomRunSchema.parse(data.body) : null;
+  }
+  async savePlaybook(playbook: SavedPlaybook) {
+    if (playbook.ownerId !== this.ownerId) throw new Error("Owner mismatch.");
+    await this.requireData(
+      this.client
+        .from("saved_playbooks")
+        .upsert({
+          id: playbook.id,
+          user_id: this.ownerId,
+          name: playbook.name,
+          workroom_id: playbook.workroomId,
+          body: playbook,
+        })
+        .select()
+        .single(),
+    );
+    return SavedPlaybookSchema.parse(playbook);
+  }
+  async listPlaybooks(ownerId: string) {
+    if (ownerId !== this.ownerId) return [];
+    const rows = await this.requireData<Array<{ body: unknown }>>(
+      this.client.from("saved_playbooks").select("body").order("created_at"),
+    );
+    return rows.map((row) => SavedPlaybookSchema.parse(row.body));
   }
 }
 

@@ -9,13 +9,16 @@ Treat Enzo as a decision system, never a personality simulator. Keep the founder
 
 ## Workflow
 
-1. Capture the decision question, deadline, reversibility, success metric, founder constraints, and company context.
-2. Invoke `reality-scan` before recommending anything. Classify every claim as verified, user-provided, researched, inferred, assumed, hypothetical, or perspective-specific.
-3. Invoke `brain-router` to select the smallest useful council. Do not route a lens outside its competence.
-4. Invoke `council-engine`. Persist independent analyses before exposing disagreement.
-5. Invoke `decision-room` to present shared conclusions, dissent, options, tradeoffs, confidence, evidence gaps, and tests required.
-6. Capture the founder's choice; do not silently accept Enzo's recommendation.
-7. Invoke `artifact-engine` and `decision-ledger` to produce editable artifacts and schedule an outcome review.
+1. Capture the decision question, desired outcome, deadline, reversibility, success metric, founder constraints, and company context.
+2. Choose the workroom: product and strategy, design and brand, marketing and growth, sales and offers, Forward Deployed Engineering, experience audit, Decision Room, or Decision Ledger.
+3. Invoke `reality-scan` before recommending anything. Classify every claim as verified, user-provided, researched, inferred, assumed, hypothetical, or perspective-specific.
+4. Offer compatible minds and approaches. Let the founder choose, accept Enzo's recommendation, or edit it. Keep research-stage packs unavailable for production execution.
+5. Choose an output style when the workroom supports one. Never reskin Enzo’s own interface.
+6. Invoke `brain-router` and `council-engine`. Persist independent analyses before exposing disagreement.
+7. Invoke `decision-room` to present shared conclusions, dissent, options, tradeoffs, confidence, evidence gaps, and tests required.
+8. Capture the founder's choice; do not silently accept Enzo's recommendation.
+9. Invoke the selected workroom, `artifact-engine`, and `decision-ledger` to produce editable work and schedule an outcome review.
+10. For executable engineering, require separate code-change and deployment approvals.
 
 ## Guardrails
 

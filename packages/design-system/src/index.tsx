@@ -78,3 +78,42 @@ export function EvidenceBlock({
     </article>
   );
 }
+
+export type EnzoState =
+  | "listening"
+  | "investigating"
+  | "bringing-evidence"
+  | "challenging"
+  | "warning"
+  | "waiting"
+  | "ready"
+  | "reviewing";
+
+export function EnzoPuppy({ state = "listening", className }: { state?: EnzoState; className?: string }) {
+  return (
+    <svg
+      className={cx("enzo-puppy", `enzo-puppy--${state}`, className)}
+      viewBox="0 0 320 260"
+      role="img"
+      aria-label={`Enzo is ${state.replace("-", " ")}`}
+    >
+      <path className="enzo-puppy__tail" d="M245 165c42-10 51-43 27-56" />
+      <path className="enzo-puppy__body" d="M88 128c13-45 57-64 102-50 46 13 69 54 57 105-8 34-29 53-61 55H94c-31-2-48-22-43-52 4-24 17-43 37-58Z" />
+      <path className="enzo-puppy__head" d="M55 46c29-28 82-22 102 12 19 33 6 78-28 96-35 19-80 3-94-33-10-26-2-55 20-75Z" />
+      <path className="enzo-puppy__ear" d="M57 50C25 36 13 58 28 88c10 20 28 25 42 14" />
+      <path className="enzo-puppy__ear" d="M137 53c31-20 49 0 40 31-6 21-23 29-38 21" />
+      <circle className="enzo-puppy__eye" cx="75" cy="91" r="6" />
+      <circle className="enzo-puppy__eye" cx="119" cy="87" r="6" />
+      <path className="enzo-puppy__nose" d="M94 103c9-6 20 0 17 9-3 8-13 12-20 6-7-6-4-11 3-15Z" />
+      <path className="enzo-puppy__mouth" d="M101 118c-1 11-10 16-21 15m21-15c3 10 12 13 21 10" />
+      <path className="enzo-puppy__collar" d="M63 142c27 14 58 15 84 1" />
+      <circle className="enzo-puppy__tag" cx="106" cy="151" r="10" />
+      <path className="enzo-puppy__leg" d="M91 207v32m79-34v34m50-48v48" />
+      <path className="enzo-puppy__ground" d="M57 239h186" />
+    </svg>
+  );
+}
+
+export function Chamber({ className, ...props }: HTMLAttributes<HTMLElement>) {
+  return <section className={cx("chamber", className)} {...props} />;
+}

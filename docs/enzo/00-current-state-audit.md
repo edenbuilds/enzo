@@ -2,7 +2,7 @@
 
 ## What exists
 
-Enzo is a pnpm TypeScript monorepo with a Next.js 16 web product, an Express remote MCP service, shared Zod contracts, an Avenir design-system package, Supabase migrations, a repository-local Codex plugin, and a portable Agent Skill. The public first release is deployed at `tryenzo.vercel.app`; the MCP endpoint is deployed separately at `tryenzo-mcp.vercel.app/mcp`.
+Enzo is a pnpm TypeScript monorepo with a Next.js 16 web product, an Express remote MCP service, shared Zod contracts, the Enzo Broadsheet design-system package, Supabase migrations, a repository-local Codex plugin, and portable Agent Skills. The public release is deployed at `tryenzo.vercel.app`; the MCP endpoint is deployed separately at `tryenzo-mcp.vercel.app/mcp`.
 
 The current information architecture covers a landing page, workspace dashboard, audit intake, evidence-backed audit report, adaptive vision interview, and public Vision Brief. The first working loop is: ingest current product evidence, diagnose it, resolve contradictions, create a brief, and expose an explicit next action.
 
@@ -12,7 +12,7 @@ The current information architecture covers a landing page, workspace dashboard,
 
 ## Visual system
 
-The supplied Avenir system is implemented as framework-independent CSS tokens plus Tailwind v4 mappings. Lora, Inter Tight, and Fragment Mono create the editorial hierarchy. Warm Parchment, Linen Lift, Deep Navy, and restrained Solar Accent are consistent across product and documentation. A runtime visual pass found and fixed a Tailwind variable-shadowing defect. Desktop and mobile product journeys now render correctly.
+Enzo Broadsheet is implemented as framework-independent CSS tokens plus Tailwind v4 mappings. EB Garamond and Figtree create the editorial hierarchy. Lumen Cream, Vast Ink, Lavender Whisper, Forest Ink, and Ember Glow are consistent across product and documentation.
 
 ## What works
 
@@ -37,7 +37,7 @@ The shipped wedge is an experience interrogation product. The larger Enzo thesis
 
 ## Preserve
 
-Preserve the Avenir system, evidence taxonomy, safe ingestion, adaptive questioning, Vision Brief format, portable skill, MCP contracts, and private-by-default data boundary. These are credible foundations for the founder decision studio.
+Preserve the Broadsheet system, evidence taxonomy, safe ingestion, adaptive questioning, Vision Brief format, portable skills, MCP contracts, and private-by-default data boundary.
 
 ## Refactor next
 

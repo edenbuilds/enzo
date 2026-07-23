@@ -1,0 +1,4 @@
+interface:
+  display_name: "Forward Deployed Engineering"
+  short_description: "Build and deploy through explicit approvals"
+  default_prompt: "Use $forward-deployed-engineering to turn this founder outcome into a bounded plan."

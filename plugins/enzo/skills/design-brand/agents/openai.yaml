@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design and Brand"
+  short_description: "Choose and build a coherent design direction"
+  default_prompt: "Use $design-brand to turn this founder outcome into a bounded plan."

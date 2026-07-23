@@ -21,6 +21,17 @@ import {
   FounderProfileSchema,
   FixtureDecisionRepository,
   PRODUCTION_LENSES,
+  MIND_PACKS,
+  STYLE_PACKS,
+  WORKROOMS,
+  WorkroomKindSchema,
+  CouncilSelectionSchema,
+  configureWorkroomRun,
+  createWorkroomRun,
+  recommendCouncil,
+  recordDeployment,
+  resolveApproval,
+  startWorkroomRun,
   councilIdempotencyKey,
   advanceDecision,
   createFixtureStudio,
@@ -49,6 +60,152 @@ export function createToolServer(
   decisionRepository: DecisionRepository = new FixtureDecisionRepository(),
 ) {
   const server = new McpServer({ name: "enzo", version: "0.1.0" });
+
+  server.registerTool(
+    "list_minds",
+    {
+      description: "List reviewed and research-stage methodological mind packs with their boundaries and provenance.",
+      inputSchema: { workroomId: WorkroomKindSchema.optional(), includeResearch: z.boolean().default(true) },
+    },
+    async ({ workroomId, includeResearch }) =>
+      json(
+        MIND_PACKS.filter(
+          (mind) =>
+            (includeResearch || mind.evaluationStatus !== "research") &&
+            (!workroomId || mind.compatibleWorkrooms.includes(workroomId)),
+        ),
+      ),
+  );
+
+  server.registerTool(
+    "list_workrooms",
+    { description: "List Enzo workrooms, required evidence, compatible packs, and completion criteria.", inputSchema: {} },
+    async () => json(WORKROOMS),
+  );
+
+  server.registerTool(
+    "list_styles",
+    { description: "List output style packs. Styles affect generated work, never the Enzo workspace identity.", inputSchema: {} },
+    async () => json(STYLE_PACKS),
+  );
+
+  server.registerTool(
+    "recommend_council",
+    {
+      description: "Recommend the smallest useful set of minds for a workroom and explain the routing.",
+      inputSchema: { workroomId: WorkroomKindSchema, desiredOutcome: z.string().min(1) },
+    },
+    async ({ workroomId, desiredOutcome }) => json(recommendCouncil(workroomId, desiredOutcome)),
+  );
+
+  server.registerTool(
+    "create_workroom_run",
+    {
+      description: "Create an owner-scoped workroom run around a concrete founder outcome.",
+      inputSchema: {
+        companyId: z.string(),
+        workroomId: WorkroomKindSchema,
+        desiredOutcome: z.string().min(1),
+        constraints: z.array(z.string()).default([]),
+        evidenceClaimIds: z.array(z.string()).default([]),
+      },
+    },
+    async (input) =>
+      json(
+        await decisionRepository.saveWorkroomRun(
+          createWorkroomRun({ ownerId, ...input }),
+        ),
+      ),
+  );
+
+  server.registerTool(
+    "select_workroom_packs",
+    {
+      description: "Save the founder-selected minds, operating approaches, and optional output style.",
+      inputSchema: {
+        runId: z.string(),
+        mindIds: z.array(z.string()).min(1).max(4),
+        approachIds: z.array(z.string()).max(3).default([]),
+        styleId: z.string().optional(),
+        selectionMode: z.enum(["founder", "enzo-recommended", "founder-edited"]),
+        routerRationale: z.array(z.string()).default([]),
+      },
+    },
+    async ({ runId, styleId, ...selectionInput }) => {
+      const run = await decisionRepository.getWorkroomRun(ownerId, runId);
+      if (!run) throw new Error("Workroom run not found.");
+      const selection = CouncilSelectionSchema.parse({ schemaVersion: SCHEMA_VERSION, ...selectionInput });
+      return json(await decisionRepository.saveWorkroomRun(configureWorkroomRun(run, selection, styleId)));
+    },
+  );
+
+  server.registerTool(
+    "start_workroom_run",
+    {
+      description: "Start a configured workroom. Executable workrooms stop at an explicit approval gate.",
+      inputSchema: { runId: z.string() },
+    },
+    async ({ runId }) => {
+      const run = await decisionRepository.getWorkroomRun(ownerId, runId);
+      if (!run) throw new Error("Workroom run not found.");
+      return json(await decisionRepository.saveWorkroomRun(startWorkroomRun(run)));
+    },
+  );
+
+  server.registerTool(
+    "approve_execution",
+    {
+      description: "Approve or deny a bounded code-change gate. Denial stops the run.",
+      inputSchema: { runId: z.string(), gateId: z.string(), approved: z.boolean() },
+    },
+    async ({ runId, gateId, approved }) => {
+      const run = await decisionRepository.getWorkroomRun(ownerId, runId);
+      if (!run) throw new Error("Workroom run not found.");
+      return json(await decisionRepository.saveWorkroomRun(resolveApproval(run, gateId, approved, ownerId)));
+    },
+  );
+
+  server.registerTool(
+    "get_workroom_run",
+    { description: "Get an owner-scoped workroom run, its approvals, execution plan, and deployment record.", inputSchema: { runId: z.string() } },
+    async ({ runId }) => {
+      const run = await decisionRepository.getWorkroomRun(ownerId, runId);
+      if (!run) throw new Error("Workroom run not found.");
+      return json(run);
+    },
+  );
+
+  server.registerTool(
+    "approve_deployment",
+    {
+      description: "Approve or deny the production deployment gate after verification is complete.",
+      inputSchema: { runId: z.string(), gateId: z.string(), approved: z.boolean() },
+    },
+    async ({ runId, gateId, approved }) => {
+      const run = await decisionRepository.getWorkroomRun(ownerId, runId);
+      if (!run) throw new Error("Workroom run not found.");
+      return json(await decisionRepository.saveWorkroomRun(resolveApproval(run, gateId, approved, ownerId)));
+    },
+  );
+
+  server.registerTool(
+    "record_deployment",
+    {
+      description: "Record the approved deployment revision, result, URL, and rollback metadata.",
+      inputSchema: {
+        runId: z.string(),
+        revision: z.string().min(1),
+        url: z.url().optional(),
+        success: z.boolean(),
+        environment: z.string().default("production"),
+      },
+    },
+    async ({ runId, ...input }) => {
+      const run = await decisionRepository.getWorkroomRun(ownerId, runId);
+      if (!run) throw new Error("Workroom run not found.");
+      return json(await decisionRepository.saveWorkroomRun(recordDeployment(run, input)));
+    },
+  );
 
   server.registerTool(
     "create_project",

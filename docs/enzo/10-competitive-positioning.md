@@ -13,7 +13,7 @@ Enzo's working category is **Founder Decision Studio**. Its believable wedge is:
 
 Homepage hierarchy:
 
-1. “Borrow world-class judgment. Keep the final say.”
+1. “Enzo finds what matters. You make the call.”
 2. Show the evidence-to-decision mechanism.
 3. Demonstrate disagreement and founder control.
 4. Show the resulting artifact and review date.

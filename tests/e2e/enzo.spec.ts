@@ -4,11 +4,9 @@ test.describe("Enzo public experience", () => {
   test("landing page leads into the decision studio", async ({ page }) => {
     await page.goto("/");
     await expect(page).toHaveTitle(/Enzo/);
-    await expect(page.getByRole("heading", { name: /Borrow world-class judgment/i })).toBeVisible();
-    await page.getByRole("link", { name: "Enter the Decision Studio" }).click();
-    await expect(
-      page.getByRole("heading", { name: /Your company, held in context/i }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Enzo finds what matters/i })).toBeVisible();
+    await page.getByRole("link", { name: "Start a workroom" }).click();
+    await expect(page.getByRole("heading", { name: /Choose the help/i })).toBeVisible();
   });
 
   test("intake reaches the evidence-backed report", async ({ page }) => {
@@ -73,5 +71,31 @@ test.describe("Enzo public experience", () => {
       .fill("The decision loop is clearer than the audit category.");
     await page.getByTestId("save-outcome-review").click();
     await expect(page.getByText(/Outcome recorded\. This decision/i)).toBeVisible();
+  });
+
+  test("founder composes a workroom from reviewed minds and an output style", async ({ page }) => {
+    await page.goto("/workrooms/new");
+    await expect(page.getByTestId("workroom-composer")).toBeVisible();
+    await page.getByText("Forward Deployed Engineering", { exact: true }).first().click();
+    await page.getByRole("button", { name: /Broadsheet Editorial/i }).click();
+    await page.getByTestId("configure-workroom").click();
+    await expect(page.getByTestId("composer-confirmation")).toContainText("Workroom configured");
+  });
+
+  test("research minds are visible but cannot enter production councils", async ({ page }) => {
+    await page.goto("/minds");
+    const hormozi = page.getByRole("heading", { name: "Alex Hormozi" }).locator("..");
+    await expect(hormozi).toContainText("research");
+    await expect(hormozi.getByRole("button", { name: "In review" })).toBeDisabled();
+  });
+
+  test("Forward Deployed Engineering requires two explicit approvals", async ({ page }) => {
+    await page.goto("/workrooms/forward-deployed-engineering");
+    await expect(page.getByTestId("execution-plan")).toBeVisible();
+    await expect(page.getByTestId("approve-deployment")).toBeDisabled();
+    await page.getByTestId("approve-execution").click();
+    await expect(page.getByTestId("approve-deployment")).toBeEnabled();
+    await page.getByTestId("approve-deployment").click();
+    await expect(page.getByTestId("deployment-confirmation")).toBeVisible();
   });
 });

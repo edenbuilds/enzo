@@ -1,7 +1,7 @@
 {
   "name": "enzo",
-  "version": "0.1.0+codex.20260723183754",
-  "description": "Turn founder context and evidence into a routed council, explicit decision, editable artifacts, and outcome review.",
+  "version": "0.1.0+codex.20260723203547",
+  "description": "Choose minds, workrooms, and styles to turn founder evidence into decisions and shipped work.",
   "author": {
     "name": "Omkar Sonawane",
     "email": "omkar1sonawane@gmail.com",
@@ -10,25 +10,37 @@
   "homepage": "https://tryenzo.vercel.app",
   "repository": "https://github.com/edenbuilds/enzo",
   "license": "MIT",
-  "keywords": ["founder", "decision", "council", "audit", "product", "positioning", "strategy"],
+  "keywords": [
+    "founder",
+    "minds",
+    "workrooms",
+    "engineering",
+    "design",
+    "marketing",
+    "sales"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Enzo",
-    "shortDescription": "Evidence-led founder decisions and outcome reviews",
-    "longDescription": "Move from company context and a reality scan through independent methodological lenses, explicit disagreement, founder choice, editable decision artifacts, and calibrated outcome review. The original experience audit and Vision Brief remain available as Enzo's product workroom.",
+    "shortDescription": "Founder-selected minds, workrooms, and styles",
+    "longDescription": "Choose a business workroom, assemble reviewed methodological minds, keep their first analyses independent, preserve disagreement, and turn the founder's final choice into artifacts or approval-gated engineering work.",
     "developerName": "edenbuilds",
     "category": "Developer Tools",
-    "capabilities": ["Interactive", "Read", "Write"],
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
     "websiteURL": "https://tryenzo.vercel.app",
     "privacyPolicyURL": "https://github.com/edenbuilds/enzo/blob/main/PRIVACY.md",
     "termsOfServiceURL": "https://github.com/edenbuilds/enzo/blob/main/TERMS.md",
     "defaultPrompt": [
-      "Run the complete Enzo decision workflow for what this product should promise first.",
-      "Audit this experience, separate evidence from inference, and route the smallest useful council.",
-      "Turn my founder choice into a cited Decision Memo, 30-day plan, and outcome review."
+      "Compose a product workroom and recommend the smallest reviewed council.",
+      "Choose a design style and turn this founder decision into a build-ready direction.",
+      "Use Forward Deployed Engineering to scope, verify, and deploy this change safely."
     ],
-    "brandColor": "#0B2E3C",
+    "brandColor": "#F0D7FF",
     "composerIcon": "./assets/enzo-icon.svg",
     "logo": "./assets/enzo-logo.svg",
     "screenshots": []

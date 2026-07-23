@@ -1,77 +1,64 @@
-# Avenir — Enzo design reference
+# Enzo Broadsheet design reference
 
-> Clarity, trust, substance.
+> Cream broadsheet, dark velvet chambers.
 
-Avenir is Enzo’s light editorial system: institutional deep navy, warm parchment, lifted white surfaces, controlled mono labels, and a single solar accent. It should feel like a senior strategist who brought evidence, not a dashboard competing for attention.
+Enzo Broadsheet is an editorial software system built from warm paper, near-black rooms, large regular-weight serif type, direct borders, and a small set of deliberate accents. The interface should feel serious enough for a consequential founder decision and friendly enough to invite an unfinished thought.
 
-## Tokens
+## Foundation
 
-| Role                     | Token                    | Value     |
-| ------------------------ | ------------------------ | --------- |
-| Primary ink and surround | `--color-deep-navy`      | `#0b2e3c` |
-| Cool hover wash          | `--color-mist-blue`      | `#b8cdd4` |
-| Recessed surface         | `--color-dusk-stone`     | `#e5e3e1` |
-| Elevated surface         | `--color-linen-lift`     | `#ffffff` |
-| Canvas                   | `--color-warm-parchment` | `#f7f6f5` |
-| Primary accent           | `--color-solar-accent`   | `#ffe96f` |
-| Error                    | `--color-blush-error`    | `#d16c6c` |
-| Success                  | `--color-fern-success`   | `#4f9b69` |
-| Warning                  | `--color-amber-warning`  | `#9c741f` |
+| Role | Token | Value |
+| --- | --- | --- |
+| Primary action | `--color-lavender-whisper` | `#f0d7ff` |
+| Secondary surface | `--color-forest-ink` | `#034f46` |
+| Active state | `--color-ember-glow` | `#ffa946` |
+| Primary ink and chamber | `--color-vast-ink` | `#1a1a1a` |
+| Canvas and reversed text | `--color-lumen-cream` | `#ffffeb` |
+| Quiet border | `--color-lumen-stone` | `#e4e4d0` |
+| Muted text | `--color-fog` | `#74746b` |
+| White puppy coat | `--color-pure-white` | `#ffffff` |
 
-`--color-slate-teal` is a semantic alias of Deep Navy. Do not duplicate its raw value in components.
+Use EB Garamond 400 for editorial headings. Use Figtree 400 through 700 for body copy, controls, labels, and metadata. EB Garamond falls back to Georgia and then a generic serif.
 
-### Typography
+Display sizes range from 48px to 120px with tight line height. Body copy ranges from 16px to 22px. Authority comes from scale and clarity, not heavy display weights.
 
-- Headings: Lora 400 with a Georgia/serif fallback. Use tight negative tracking and no bold display weights.
-- Body and controls: Inter Tight 400/500.
-- Labels and metadata: Fragment Mono, uppercase, 12–14px, tracked.
-- Display scale: 52, 64, and 88px, responsive through `clamp()` where appropriate.
-- Body scale: 14, 16, and 24px.
+## Geometry and rhythm
 
-### Geometry and rhythm
+- Base spacing unit: 8px.
+- Page maximum: 1200px.
+- Major section gap: 64px to 96px.
+- Standard card padding: 32px.
+- Buttons and inputs: 12px radius.
+- Standard cards: 32px radius.
+- Dark chambers: 40px to 80px radius.
+- Navigation and status badges may use a full pill.
+- Interactive elements use a 2px Vast Ink border.
+- Cards and sections do not use decorative shadows.
 
-- Base unit: 4px.
-- Spacing: 4, 6, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 120, 160, 200px.
-- Buttons and inputs: 8px radius. Never use pill buttons.
-- Cards: 12px radius. Large lifted surfaces: 20px.
-- Page maximum: 1800px on a twelve-column fluid grid with 16px gutters.
-- Desktop section spacing: 80–200px. Mobile sections never drop below 32px horizontal padding.
+## Product patterns
 
-### Motion
+- Alternate cream broadsheet surfaces with dark chambers.
+- Keep body copy left aligned and within a readable measure.
+- Use Lavender Whisper for the primary action and selected states.
+- Use Forest Ink for secondary panels, trusted status, and concentrated evidence.
+- Use Ember Glow for active, warning, or live status details.
+- Use borders, fill changes, and spacing for hierarchy. Do not use gradients.
+- Keep Enzo’s own interface in Broadsheet. Selected styles affect generated work only.
 
-- Card lift: 200ms ease, maximum 4px.
-- UI transitions: 300ms linear.
-- Disable non-essential movement under `prefers-reduced-motion`.
+## Enzo puppy
 
-## Component rules
+Enzo is an original white editorial-vector puppy with a Vast Ink outline. Lavender and Ember details may appear on the collar, tag, or state marker.
 
-- Buttons: primary navy, secondary outlined, ghost text, accent solar. Solar is reserved for the principal action or a small circular mark.
-- Cards: white over parchment; never use heavy shadows.
-- Inputs: Dusk Stone recessed surface with visible navy focus.
-- Alerts: semantic colors are functional only.
-- Evidence blocks: show category, confidence, observation, meaning, and action.
-- Report navigation: sticky on desktop, linearized on small screens.
-- Tables and scorecards: use rules, spacing, and type hierarchy rather than decorative color.
+The puppy can listen, investigate, bring evidence, challenge, warn, wait, prepare to act, and review an outcome. Every state must include text and must remain understandable without motion or color.
 
-## Page patterns
+Use the puppy prominently in the landing hero and selectively at important workflow moments. Avoid childish dialogue, photorealistic imagery, repeated dog jokes, or mascot decoration with no product meaning.
 
-- Landing: full-viewport licensed professional photography, natural contrast, lower-left editorial headline, floating parchment navigation.
-- Workspace: Deep Navy outer frame surrounding a lifted parchment canvas.
-- Intake: editorial context beside a calm recessed form.
-- Audit: sticky dark sidebar with spacious long-form findings and visible evidence confidence.
-- Interview: one focused round at a time, clear radio-card selection, explicit progress.
-- Vision Brief: publication-like hierarchy, sticky contents, numbered narrative, decisive closing action.
+## Accessibility and motion
 
-## Content voice
-
-Use declarative, measured language. Prefer precise consequences over startup urgency and cleverness. Claims must either reveal evidence or declare themselves as inference. Metadata is laconic and functional.
-
-## Accessibility
-
-- Verify every foreground/background combination to WCAG AA.
-- Deep Navy on Solar Accent is permitted only at verified sizes and weights.
-- Preserve keyboard access, visible focus, semantic headings, labeled controls, and live status announcements.
-- Never put meaning in color alone.
-- Print views must remain readable without dark backgrounds.
+- Meet WCAG AA for text, controls, and meaningful graphics.
+- Preserve visible focus and logical keyboard order.
+- Use semantic headings, labeled controls, live regions, and useful error recovery.
+- Do not rely on color, pose, or animation alone.
+- Disable nonessential motion under `prefers-reduced-motion`.
+- Keep print and PDF exports legible without dark backgrounds.
 
 The canonical implementation lives in `packages/design-system/src/tokens.css` and the reusable primitives exported by `@enzo/design-system`.

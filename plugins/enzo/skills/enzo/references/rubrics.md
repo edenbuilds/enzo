@@ -22,7 +22,7 @@ Check discovery, filtering, product comprehension, merchandising, trust, shippin
 
 ## Portfolios and personal brands
 
-Check identity, specialization, quality of evidence, case-study narrative, role clarity, credibility, contact path, and whether the work—not decoration—carries the argument.
+Check identity, specialization, quality of evidence, case-study narrative, role clarity, credibility, contact path, and whether the work, not decoration, carries the argument.
 
 ## Internal and personal tools
 

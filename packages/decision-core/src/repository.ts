@@ -5,7 +5,9 @@ import type {
   Decision,
   FounderProfile,
   OutcomeReview,
+  SavedPlaybook,
   StudioSnapshot,
+  WorkroomRun,
 } from "./schemas.js";
 import { createFixtureStudio } from "./engine.js";
 
@@ -20,10 +22,16 @@ export interface DecisionRepository {
   getCouncilByKey(ownerId: string, idempotencyKey: string): Promise<CouncilRun | null>;
   listDecisions(ownerId: string): Promise<Decision[]>;
   getSnapshot(ownerId: string): Promise<StudioSnapshot>;
+  saveWorkroomRun(run: WorkroomRun): Promise<WorkroomRun>;
+  getWorkroomRun(ownerId: string, runId: string): Promise<WorkroomRun | null>;
+  savePlaybook(playbook: SavedPlaybook): Promise<SavedPlaybook>;
+  listPlaybooks(ownerId: string): Promise<SavedPlaybook[]>;
 }
 
 export class FixtureDecisionRepository implements DecisionRepository {
   private readonly snapshots = new Map<string, StudioSnapshot>();
+  private readonly workroomRuns = new Map<string, WorkroomRun>();
+  private readonly playbooks = new Map<string, SavedPlaybook[]>();
   private snapshot(ownerId: string) {
     const existing = this.snapshots.get(ownerId);
     if (existing) return existing;
@@ -82,5 +90,24 @@ export class FixtureDecisionRepository implements DecisionRepository {
   }
   async getSnapshot(ownerId: string) {
     return this.snapshot(ownerId);
+  }
+  async saveWorkroomRun(run: WorkroomRun) {
+    const key = `${run.ownerId}:${run.id}`;
+    this.workroomRuns.set(key, run);
+    return run;
+  }
+  async getWorkroomRun(ownerId: string, runId: string) {
+    return this.workroomRuns.get(`${ownerId}:${runId}`) ?? null;
+  }
+  async savePlaybook(playbook: SavedPlaybook) {
+    const current = this.playbooks.get(playbook.ownerId) ?? [];
+    this.playbooks.set(playbook.ownerId, [
+      ...current.filter((item) => item.id !== playbook.id),
+      playbook,
+    ]);
+    return playbook;
+  }
+  async listPlaybooks(ownerId: string) {
+    return this.playbooks.get(ownerId) ?? [];
   }
 }

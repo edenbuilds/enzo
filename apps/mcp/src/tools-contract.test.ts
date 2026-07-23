@@ -24,6 +24,17 @@ const toolNames = [
   "generate_artifact",
   "list_decisions",
   "review_outcome",
+  "list_minds",
+  "list_workrooms",
+  "list_styles",
+  "recommend_council",
+  "create_workroom_run",
+  "select_workroom_packs",
+  "start_workroom_run",
+  "approve_execution",
+  "get_workroom_run",
+  "approve_deployment",
+  "record_deployment",
 ];
 
 describe("MCP decision contract", () => {
@@ -74,5 +85,39 @@ describe("MCP decision contract", () => {
       },
     });
     expect(recorded.isError).not.toBe(true);
+  });
+
+  it("keeps Forward Deployed Engineering behind founder approval gates", async () => {
+    const repository = new FixtureDecisionRepository();
+    const server = createToolServer("contract-founder", repository);
+    const client = new Client({ name: "workroom-contract", version: "1.0.0" });
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
+    closers.push(() => client.close(), () => server.close());
+
+    const created = await client.callTool({
+      name: "create_workroom_run",
+      arguments: {
+        companyId: "company-contract",
+        workroomId: "forward-deployed-engineering",
+        desiredOutcome: "Ship a tested workroom composer",
+        evidenceClaimIds: ["claim-codebase"],
+      },
+    });
+    const run = (created.structuredContent as { result: { id: string } }).result;
+    const selected = await client.callTool({
+      name: "select_workroom_packs",
+      arguments: {
+        runId: run.id,
+        mindIds: ["steve-jobs"],
+        approachIds: [],
+        styleId: "technical-utility",
+        selectionMode: "founder",
+      },
+    });
+    expect(selected.isError).not.toBe(true);
+    const started = await client.callTool({ name: "start_workroom_run", arguments: { runId: run.id } });
+    const gated = (started.structuredContent as { result: { status: string } }).result;
+    expect(gated.status).toBe("awaiting-execution-approval");
   });
 });

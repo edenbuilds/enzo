@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EnzoPuppy } from "@enzo/design-system";
 
 export const metadata = { title: "Vision Brief" };
 
@@ -7,7 +8,7 @@ export default function PublicReport() {
     <main className="public-report">
       <header className="public-report__header">
         <Link className="wordmark" href="/">
-          <span>EI</span>
+          <span className="wordmark__puppy" aria-hidden="true"><EnzoPuppy /></span>
           <b>Enzo</b>
         </Link>
         <span className="tag">Read-only brief</span>

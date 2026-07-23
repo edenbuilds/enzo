@@ -18,4 +18,4 @@ Consider direct competitors, adjacent tools, agencies, consultants, spreadsheets
 
 Consider project fee, productized service, retainer, subscription, usage, seats, marketplace commission, transaction fee, membership, licensing, white-label, enterprise contract, lead generation, consultation, hybrid software/service, or internal cost-saving utility.
 
-When the model is missing, propose two to four hypotheses. For each identify payer, value exchanged, pricing unit, acquisition path, retention mechanism, operational burden, primary advantage, and primary risk. Recommend the easiest assumption to validate—not the most elaborate model.
+When the model is missing, propose two to four hypotheses. For each identify payer, value exchanged, pricing unit, acquisition path, retention mechanism, operational burden, primary advantage, and primary risk. Recommend the easiest assumption to validate, not the most elaborate model.

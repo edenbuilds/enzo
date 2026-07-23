@@ -1,53 +1,79 @@
 <div align="center">
-  <img src="plugins/enzo/assets/enzo-logo.svg" alt="Enzo" width="260" />
+  <img src="plugins/enzo/assets/enzo-logo.svg" alt="Enzo" width="280" />
 
-# Borrow world-class judgment. Keep the final say.
+# Enzo finds what matters. You make the call.
 
-Enzo is a founder decision studio. It turns company context and evidence into structured disagreement, a founder-owned decision, an editable memo, and an outcome the company can learn from.
+Enzo is a founder operating system for choosing how a problem should be challenged, where the work should happen, and how the result should be expressed.
 
-[Open the decision demo](https://tryenzo.vercel.app/home) · [Experience audit](https://tryenzo.vercel.app/audit/new) · [Architecture](docs/enzo/02-system-architecture.md) · [Avenir design system](docs/design.md)
+[Open Enzo](https://tryenzo.vercel.app) · [Compose a workroom](https://tryenzo.vercel.app/workrooms/new) · [Browse minds](https://tryenzo.vercel.app/minds) · [Open Forward Deployed Engineering](https://tryenzo.vercel.app/workrooms/forward-deployed-engineering)
 
 </div>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/enzo-workspace-dark.svg">
-  <img src="docs/assets/enzo-workspace.svg" alt="Enzo audit workspace preview showing evidence-led findings and a decisive Vision Brief" width="100%">
-</picture>
+## How Enzo works
 
-## Why Enzo
+Every run combines three founder-controlled choices:
 
-Most AI cofounders collapse research, opinion, strategy, and recommendation into one confident answer. Enzo keeps them separate.
+1. **Mind:** Choose a reviewed methodological perspective, or let Enzo recommend a small council.
+2. **Workroom:** Choose the business outcome, from product strategy to Forward Deployed Engineering.
+3. **Style:** Choose how generated work should look, sound, or behave.
 
-Every material finding carries evidence or declares itself as inference. Once the current experience is understood, Enzo asks only the questions that remain unresolved and turns the founder's decision into a Vision Brief that design, product, and engineering can use without translation.
+Enzo keeps company evidence, assumptions, disagreements, founder decisions, artifacts, approvals, deployments, and outcomes connected. It never turns a named mind into celebrity role-play or takes the founder’s final choice away.
 
-The first production slice carries one question—“What should this product promise first?”—through company memory, a reality scan, three sealed lens analyses, structured disagreement, founder choice, editable artifacts, and the Decision Ledger. Named lenses are disclosed methodological perspectives, never celebrity role-play or claimed endorsements.
+## What ships
 
-## What ships in this repository
+- Ten bounded mind packs with provenance, competence, exclusions, blind spots, cutoffs, and evaluation status.
+- Eight primary workrooms for product, design, marketing, sales, engineering, audit, decisions, and outcomes.
+- Eight output styles plus marketing and sales approach packs.
+- A workroom composer with manual selection, Enzo routing, founder overrides, and reusable contracts.
+- Independent first-pass analyses followed by explicit disagreement and Enzo synthesis.
+- Approval-gated Forward Deployed Engineering with separate code-change and deployment gates.
+- Company memory, evidence claims, editable artifacts, a Decision Ledger, and outcome review.
+- A remote MCP service, a repository-local Codex plugin, and portable Agent Skills.
+- Supabase persistence with ownership-based Row Level Security and a deterministic public demo.
+- The Enzo Broadsheet design system and an original white puppy identity.
 
-- A polished Next.js workspace using the Avenir editorial design system.
-- A remote MCP service with the original nine audit tools plus ten decision tools.
-- A portable twelve-skill decision graph, the original audit skill, and three provenance-gated lens packs.
-- A repository-local Codex plugin marketplace.
-- Backward-compatible audit contracts plus versioned founder, company, evidence-claim, decision, council, artifact, experiment, and outcome schemas.
-- Safe public-URL capture with redirect revalidation, private-network blocking, response limits, desktop/mobile Playwright captures, and untrusted-content handling.
-- Supabase Auth, OAuth 2.1 integration points, private storage, migrations, and ownership-based RLS.
-- OpenAI Responses API enrichment with `gpt-5.6-terra` as the configurable default.
-- Unit, contract, browser, accessibility-oriented, skill, and plugin validation.
+## Mind library
 
-## Founder decision flow
+The launch catalog includes Steve Jobs, Alex Hormozi, Charlie Munger, Paul Graham, Naval Ravikant, Nassim Taleb, Andrej Karpathy, Richard Feynman, MrBeast, and Rob Pike.
 
-1. Capture founder constraints and a structured company model.
-2. Add a public URL, screenshot, PDF, repository reference, visual reference, or local codebase fact.
-3. Run the existing experience audit as the reality scan; keep facts, assumptions, and gaps visible.
-4. Route the smallest useful council and seal each first-round analysis independently.
-5. Expose agreement and material dissent, then ask the founder to choose.
-6. Edit the Decision Memo and 30-day plan, revisit the Ledger, and record the outcome.
+Each entry is a methodological perspective derived from public material. It is not the person, an endorsement, or an official representation. Research-stage minds are visible for inspection but cannot enter production councils until provenance and evaluation gates pass.
 
-The public route uses realistic deterministic fixture data and does not persist. When Supabase is configured, studio routes require authentication and hosted mutations fail closed if private persistence is unavailable.
+## Forward Deployed Engineering
+
+Forward Deployed Engineering is a primary executable workroom:
+
+1. Inspect the repository, environment, architecture, and deployment target.
+2. Connect the founder’s business decision to a bounded technical outcome.
+3. Produce a technical design, risk assessment, acceptance criteria, verification commands, and rollback plan.
+4. Request explicit approval before changing code or consequential state.
+5. Implement and verify the approved scope.
+6. Request separate approval before deployment.
+7. Record the revision, deployment, rollback metadata, success metric, and outcome review date.
+
+The public demo simulates approvals and never changes production state.
+
+## Architecture
+
+```mermaid
+flowchart LR
+  Founder[Founder] --> Composer[Workroom composer]
+  Composer --> Mind[Mind packs]
+  Composer --> Workroom[Functional workroom]
+  Composer --> Style[Output style]
+  Mind --> Independent[Independent analyses]
+  Independent --> Disagreement[Disagreement pass]
+  Workroom --> Artifact[Artifact or execution plan]
+  Disagreement --> Decision[Founder decision]
+  Decision --> Artifact
+  Artifact --> Ledger[Decision Ledger]
+  Ledger --> Review[Outcome review]
+```
+
+The web product is built with Next.js. The MCP service exposes audit, decision, catalog, workroom, approval, and deployment tools. Shared Zod contracts live in `@enzo/audit-core` and `@enzo/decision-core`. Supabase stores private company and workflow state with RLS.
 
 ## Quick start
 
-Requirements: Node.js 20.9+, pnpm 9+, and optional Supabase/OpenAI credentials.
+Requirements: Node.js 20.9+ and pnpm 9+.
 
 ```bash
 git clone https://github.com/edenbuilds/enzo.git
@@ -57,7 +83,7 @@ pnpm install
 pnpm dev:web
 ```
 
-Open [http://localhost:3000](http://localhost:3000). With no credentials, Enzo intentionally starts in deterministic demo mode.
+Open [http://localhost:3000](http://localhost:3000). Without credentials, Enzo starts in deterministic, non-persistent demo mode.
 
 Run the MCP service separately:
 
@@ -66,62 +92,40 @@ pnpm dev:mcp
 curl http://localhost:8787/health
 ```
 
-Production deployment keeps the monorepo root as the upload boundary so workspace packages resolve:
-
-```bash
-vercel link --yes --project tryenzo-mcp
-vercel deploy --prod --local-config vercel.mcp.json
-```
-
-To enable browser screenshots:
-
-```bash
-pnpm exec playwright install chromium
-CAPTURE_ENABLED=true pnpm dev:mcp
-```
-
 ## Install the Codex plugin
-
-Clone the repository, register its marketplace, and install Enzo:
 
 ```bash
 codex plugin marketplace add "$(pwd)"
 codex plugin add enzo@enzo
 ```
 
-Start a new Codex task after installation so the skill and MCP tools are discovered.
+Start a new Codex task after installation so the skills and MCP tools are discovered.
 
-## Install only the portable skill
-
-Copy the complete graph into your agent’s skill directory:
+## Install portable skills
 
 ```bash
 cp -R plugins/enzo/skills/* ~/.codex/skills/
 ```
 
-Every folder follows the open Agent Skills format and can run without Enzo’s MCP service. To install only the original audit workroom, copy `plugins/enzo/skills/enzo`. To install only the orchestration entry point, copy `enzo-core` together with the skills it routes to.
-
 Example prompts:
 
-- “Use `$enzo-core` to decide what this product should promise first.”
-- “Use `$reality-scan` to separate the evidence, assumptions, and missing proof.”
-- “Use `$council-engine` to preserve disagreement between the routed lenses.”
-- “Use Enzo to audit this landing page, then turn the finding into a founder decision.”
+- “Use `$enzo-core` to compose a workroom for this founder decision.”
+- “Use `$product-strategy` to choose what this product should promise first.”
+- “Use `$design-brand` to turn this direction into an accessible design system.”
+- “Use `$marketing-growth` to create a proof-led launch test.”
+- “Use `$sales-offers` to clarify this offer and buyer path.”
+- “Use `$forward-deployed-engineering` to scope, verify, and deploy this change through explicit approvals.”
 
-## Supabase setup
+## Supabase and OpenAI
 
 ```bash
 npx supabase start
 npx supabase db reset
 ```
 
-Set the public URL and publishable key in `.env.local`; keep the secret key server-side. Enable GitHub sign-in and OAuth 2.1 in the Supabase dashboard, configure the Enzo consent route, and set `SUPABASE_OAUTH_ISSUER` for the remote MCP service.
+Set the public Supabase URL and publishable key in `.env.local`. Keep secret keys server-side. Authenticated production fails closed when private persistence is unavailable.
 
-The additive migrations preserve the audit tables and add founder profiles, company models, evidence claims, immutable lens versions and council runs, decisions, artifact revisions, experiments, outcome reviews, visual references, and provenance records. Every exposed user table has ownership-based RLS. The private evidence bucket allows PNG, JPEG, WebP, and PDF files up to 20MB under a user-owned path.
-
-## OpenAI setup
-
-Set `OPENAI_API_KEY` only on the MCP service. `OPENAI_MODEL` defaults to `gpt-5.6-terra`. Council lenses run in independent Responses API calls before a separate synthesis pass. Captured content is passed as untrusted evidence, never as instructions. Without a key, Enzo retains deterministic execution for the public demo, development, and CI.
+Set `OPENAI_API_KEY` only on the MCP service. `OPENAI_MODEL` defaults to `gpt-5.6-terra`. Without a key, Enzo uses deterministic fixture execution for the public demo and CI.
 
 ## Validation
 
@@ -130,29 +134,27 @@ pnpm validate
 pnpm test:e2e
 ```
 
-CI checks formatting, linting, TypeScript, unit tests, builds, browser smoke flows, a clean Supabase migration reset, and both the skill and plugin manifests.
+Validation covers formatting, linting, TypeScript, unit tests, builds, copy rules, MCP contracts, skills, plugin structure, and browser workflows.
 
 ## Security and privacy
 
-- HTTPS targets only; credentials embedded in URLs are rejected.
-- DNS results and redirects are checked against loopback, link-local, private, reserved, and multicast ranges.
-- Browser subrequests are intercepted and revalidated.
-- Projects, founder context, company memory, decisions, and evidence are private by default.
-- Council analyses and decided snapshots are append-only; later outcomes cannot silently rewrite the original reasoning.
-- Service-role keys never enter browser bundles.
-- Hosted v1 does not log in to third-party products, submit forms, or ingest private hosted repositories.
+- Private company state is owner-scoped.
+- Captured content, repositories, and upstream skills are untrusted evidence.
+- Named minds include provenance and competence boundaries.
+- Independent analyses are persisted before synthesis.
+- Code changes and deployments require separate explicit approvals.
+- Hosted execution never silently falls back to ephemeral storage.
+- The public fixture does not persist founder input or modify production systems.
 
-Read [PRIVACY.md](PRIVACY.md) and [TERMS.md](TERMS.md).
+Read [PRIVACY.md](PRIVACY.md), [TERMS.md](TERMS.md), and [the provenance model](docs/enzo/07-safety-legal-provenance.md).
 
-## Current v1 boundaries
+## Current boundaries
 
-The public demo does not persist. Private beta requires Supabase credentials and OAuth. V1 does not include billing, teams, marketplace monetization, private repository OAuth, authenticated browser sessions, immersive voice, autonomous execution, celebrity chat, or white-labeling. Karpathy, Paul Graham, Taleb, and offer-design packs remain research-only; Hormozi is not in the first release.
-
-The research gate, source pins, licensing dispositions, competitive framing, and evaluation plan live under [`docs/enzo`](docs/enzo) and [`research/upstream-manifest.json`](research/upstream-manifest.json).
+The public demo is deterministic. Private beta requires Supabase credentials and OAuth. Research-stage minds are not production-enabled. V1 does not include billing, teams, marketplace monetization, private repository OAuth, authenticated browser sessions, immersive voice, white-labeling, or unsupervised production execution.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Security-sensitive reports should not be filed as public issues; contact the repository owner privately.
+See [CONTRIBUTING.md](CONTRIBUTING.md). Security-sensitive reports should not be filed as public issues.
 
 ## License
 

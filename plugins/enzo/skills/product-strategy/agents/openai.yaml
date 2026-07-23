@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product and Strategy"
+  short_description: "Make an evidence-backed product decision"
+  default_prompt: "Use $product-strategy to turn this founder outcome into a bounded plan."

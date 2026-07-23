@@ -1,0 +1,4 @@
+interface:
+  display_name: "Marketing and Growth"
+  short_description: "Turn audience evidence into a growth plan"
+  default_prompt: "Use $marketing-growth to turn this founder outcome into a bounded plan."

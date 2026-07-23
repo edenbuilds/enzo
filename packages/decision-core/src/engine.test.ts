@@ -6,6 +6,14 @@ import {
   createFixtureStudio,
   recordFounderDecision,
   reviewDecision,
+  MIND_PACKS,
+  STYLE_PACKS,
+  WORKROOMS,
+  configureWorkroomRun,
+  createWorkroomRun,
+  recommendCouncil,
+  resolveApproval,
+  startWorkroomRun,
 } from "./index.js";
 
 describe("decision studio", () => {
@@ -63,5 +71,63 @@ describe("decision studio", () => {
       a.council,
     );
     expect(await repository.getCouncilByKey("founder-b", a.council.idempotencyKey)).toBeNull();
+  });
+
+  it("publishes bounded mind, style, and workroom catalogs", () => {
+    expect(MIND_PACKS).toHaveLength(10);
+    expect(STYLE_PACKS).toHaveLength(8);
+    expect(WORKROOMS).toHaveLength(8);
+    expect(MIND_PACKS.find((mind) => mind.id === "alex-hormozi")?.evaluationStatus).toBe("research");
+    expect(MIND_PACKS.every((mind) => mind.disclosure.includes("not the person"))).toBe(true);
+  });
+
+  it("rejects research-stage minds and incompatible packs", () => {
+    const run = createWorkroomRun({
+      ownerId: "founder-a",
+      companyId: "company-a",
+      workroomId: "sales-offers",
+      desiredOutcome: "Clarify the offer",
+      evidenceClaimIds: ["claim-a"],
+    });
+    expect(() =>
+      configureWorkroomRun(run, {
+        schemaVersion: "1.0.0",
+        mindIds: ["alex-hormozi"],
+        approachIds: [],
+        selectionMode: "founder",
+        routerRationale: [],
+      }),
+    ).toThrow(/research review/i);
+    expect(() =>
+      configureWorkroomRun(run, {
+        schemaVersion: "1.0.0",
+        mindIds: ["steve-jobs"],
+        approachIds: [],
+        selectionMode: "founder",
+        routerRationale: [],
+      }),
+    ).toThrow(/not compatible/i);
+  });
+
+  it("requires separate execution and deployment approvals", () => {
+    const run = createWorkroomRun({
+      ownerId: "founder-a",
+      companyId: "company-a",
+      workroomId: "forward-deployed-engineering",
+      desiredOutcome: "Ship a bounded change",
+      evidenceClaimIds: ["claim-code"],
+    });
+    const configured = configureWorkroomRun(run, {
+      ...recommendCouncil("product-strategy", "Focus the product"),
+      mindIds: ["steve-jobs"],
+      approachIds: [],
+      selectionMode: "founder",
+    }, "technical-utility");
+    const started = startWorkroomRun(configured);
+    expect(started.status).toBe("awaiting-execution-approval");
+    const executionGate = started.approvalGates[0]!;
+    const executionApproved = resolveApproval(started, executionGate.id, true, "founder-a");
+    expect(executionApproved.status).toBe("awaiting-deployment-approval");
+    expect(executionApproved.approvalGates.some((gate) => gate.type === "deployment" && gate.status === "pending")).toBe(true);
   });
 });

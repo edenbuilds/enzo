@@ -13,6 +13,8 @@ import {
   type OutcomeReview,
   type StudioSnapshot,
 } from "./schemas.js";
+import { APPROACH_PACKS, MIND_PACKS, STYLE_PACKS, WORKROOMS } from "./catalog.js";
+import { configureWorkroomRun, createWorkroomRun, startWorkroomRun } from "./workrooms.js";
 
 export const LENS_DISCLOSURE =
   "A methodological perspective derived from public material. It is not the person, an endorsement, or an official representation.";
@@ -33,6 +35,9 @@ export const PRODUCTION_LENSES: LensDefinition[] = [
     blindSpots: ["Can overvalue end-to-end control", "Does not substitute for customer evidence"],
     knowledgeCutoff: "2011-10-05",
     evaluationStatus: "production",
+    domains: ["product", "positioning", "design"],
+    typicalQuestions: ["What can we remove?"],
+    exampleOutput: "A focused product promise and removal list.",
   },
   {
     schemaVersion: SCHEMA_VERSION,
@@ -46,6 +51,9 @@ export const PRODUCTION_LENSES: LensDefinition[] = [
     blindSpots: ["Can overweight downside", "Framework transfer is speculative"],
     knowledgeCutoff: "2023-11-28",
     evaluationStatus: "production",
+    domains: ["strategy", "risk"],
+    typicalQuestions: ["How does this fail?"],
+    exampleOutput: "An inversion map and pre-mortem.",
   },
   {
     schemaVersion: SCHEMA_VERSION,
@@ -60,6 +68,9 @@ export const PRODUCTION_LENSES: LensDefinition[] = [
     blindSpots: ["May favor measurable clarity over expressive novelty"],
     knowledgeCutoff: "2026-07-23",
     evaluationStatus: "production",
+    domains: ["customer", "operations"],
+    typicalQuestions: ["What would make this easier to understand and act on?"],
+    exampleOutput: "A testable customer and operating plan.",
   },
 ];
 
@@ -277,6 +288,28 @@ export function createFixtureStudio(ownerId = "demo-founder"): StudioSnapshot {
     sealedAt: now,
   });
   const artifacts = generateArtifacts(decision, council, ownerId);
+  const workroomRun = startWorkroomRun(
+    configureWorkroomRun(
+      createWorkroomRun({
+        ownerId,
+        companyId: "company-enzo",
+        workroomId: "forward-deployed-engineering",
+        desiredOutcome: "Ship the founder-controlled workroom composer to production",
+        evidenceClaimIds: ["claim-live", "claim-market"],
+        now,
+      }),
+      {
+        schemaVersion: SCHEMA_VERSION,
+        mindIds: ["steve-jobs"],
+        approachIds: [],
+        selectionMode: "founder-edited",
+        routerRationale: [
+          "Steve Jobs contributes product focus while the engineering-specific packs remain in research review.",
+        ],
+      },
+      "technical-utility",
+    ),
+  );
   return StudioSnapshotSchema.parse({
     founder: {
       schemaVersion: SCHEMA_VERSION,
@@ -339,6 +372,11 @@ export function createFixtureStudio(ownerId = "demo-founder"): StudioSnapshot {
       status: "planned",
       reviewDate: decision.reviewDate,
     },
+    minds: MIND_PACKS,
+    approaches: APPROACH_PACKS,
+    styles: STYLE_PACKS,
+    workrooms: WORKROOMS,
+    workroomRun,
   });
 }
 

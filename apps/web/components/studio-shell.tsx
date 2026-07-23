@@ -1,10 +1,14 @@
 import Link from "next/link";
 import type { Route } from "next";
 import type { ReactNode } from "react";
+import { EnzoPuppy } from "@enzo/design-system";
 
 const links = [
   ["/home", "Company home"],
   ["/company", "Company memory"],
+  ["/workrooms" as Route, "Workrooms"],
+  ["/minds" as Route, "Minds"],
+  ["/styles" as Route, "Styles"],
   ["/decisions/demo", "Decision room"],
   ["/research", "Research board"],
   ["/artifacts", "Artifacts"],
@@ -24,7 +28,7 @@ export function StudioShell({
     <main className="studio-frame">
       <aside className="studio-nav">
         <Link className="wordmark wordmark--light" href="/">
-          <span aria-hidden="true">EI</span>
+          <span aria-hidden="true" className="wordmark__puppy"><EnzoPuppy /></span>
           <b>Enzo</b>
         </Link>
         <nav aria-label="Founder studio">
@@ -70,7 +74,7 @@ export function EnzoPresence({
   return (
     <div className={`enzo-presence enzo-presence--${state}`} role="status">
       <span className="enzo-presence__mark" aria-hidden="true">
-        <i />
+        <EnzoPuppy state={state} />
       </span>
       <span>{labels[state]}</span>
     </div>

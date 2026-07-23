@@ -13,3 +13,5 @@ blob-report/
 supabase/.temp/
 *.tsbuildinfo
 .DS_Store
+.vercel
+.env*

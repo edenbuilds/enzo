@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createDemoAudit, createProject } from "@enzo/audit-core";
+import { EnzoPuppy } from "@enzo/design-system";
 
 export const metadata = { title: "Audit report" };
 
@@ -26,7 +27,7 @@ export default function AuditReport() {
     <main className="report-shell">
       <aside className="report-sidebar">
         <Link className="wordmark" href="/dashboard">
-          <span>EI</span>
+          <span className="wordmark__puppy" aria-hidden="true"><EnzoPuppy /></span>
           <b>Enzo</b>
         </Link>
         <div>
@@ -95,7 +96,7 @@ export default function AuditReport() {
         </section>
         <section className="opportunities" id="opportunities">
           <p className="eyebrow">Opportunity map</p>
-          <h2>What to change—and in what order.</h2>
+          <h2>What to change, and in what order.</h2>
           <div className="opportunity-grid">
             {audit.opportunities.map((item) => (
               <article key={item.id}>

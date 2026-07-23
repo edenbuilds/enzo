@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sales and Offers"
+  short_description: "Shape the offer, proof, and buyer path"
+  default_prompt: "Use $sales-offers to turn this founder outcome into a bounded plan."

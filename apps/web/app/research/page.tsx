@@ -1,4 +1,5 @@
 import { createFixtureStudio } from "@enzo/decision-core";
+import { EnzoPuppy } from "@enzo/design-system";
 import { StudioShell } from "@/components/studio-shell";
 import { getWorkspacePrincipal } from "@/lib/workspace";
 export const metadata = { title: "Research Board" };
@@ -39,7 +40,7 @@ export default async function ResearchPage() {
         ))}
         <article className="visual-reference">
           <div className="visual-reference__sample">
-            <span>EI</span>
+            <span aria-hidden="true"><EnzoPuppy state="investigating" /></span>
             <strong>
               Decision
               <br />

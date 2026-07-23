@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EnzoPuppy } from "@enzo/design-system";
 import { AuditIntake } from "@/components/audit-intake";
 
 export const metadata = { title: "New audit" };
@@ -8,7 +9,7 @@ export default function NewAudit() {
     <main className="intake-page">
       <header className="simple-header">
         <Link className="wordmark" href="/">
-          <span>EI</span>
+          <span className="wordmark__puppy" aria-hidden="true"><EnzoPuppy /></span>
           <b>Enzo</b>
         </Link>
         <Link href="/dashboard">Close</Link>
