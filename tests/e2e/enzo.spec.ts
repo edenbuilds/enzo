@@ -4,9 +4,11 @@ test.describe("Enzo public experience", () => {
   test("landing page leads into the decision studio", async ({ page }) => {
     await page.goto("/");
     await expect(page).toHaveTitle(/Enzo/);
-    await expect(page.getByRole("heading", { name: /Enzo finds what matters/i })).toBeVisible();
-    await page.getByRole("link", { name: "Start a workroom" }).click();
-    await expect(page.getByRole("heading", { name: /Choose the help/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Bring the knot. Enzo finds the next move." })).toBeVisible();
+    await page.getByTestId("composer-outcome").fill("Our trial users like the product but do not convert. What should we fix first?");
+    await page.getByTestId("get-first-read").click();
+    await expect(page.getByTestId("first-read")).toContainText("What is the one choice");
+    await expect(page.getByTestId("first-read")).toContainText("Product and Strategy");
   });
 
   test("intake reaches the evidence-backed report", async ({ page }) => {
@@ -73,13 +75,14 @@ test.describe("Enzo public experience", () => {
     await expect(page.getByText(/Outcome recorded\. This decision/i)).toBeVisible();
   });
 
-  test("founder composes a workroom from reviewed minds and an output style", async ({ page }) => {
+  test("founder gets value before adjusting the workroom", async ({ page }) => {
     await page.goto("/workrooms/new");
     await expect(page.getByTestId("workroom-composer")).toBeVisible();
-    await page.getByText("Forward Deployed Engineering", { exact: true }).first().click();
-    await page.getByRole("button", { name: /Broadsheet Editorial/i }).click();
-    await page.getByTestId("configure-workroom").click();
-    await expect(page.getByTestId("composer-confirmation")).toContainText("Workroom configured");
+    await page.getByTestId("composer-outcome").fill("Ship a tested fix for the signup bug to production");
+    await page.getByTestId("get-first-read").click();
+    await expect(page.getByTestId("first-read")).toContainText("smallest production change");
+    await expect(page.getByTestId("first-read")).toContainText("Forward Deployed Engineering");
+    await expect(page.getByText("Adjust Enzo's approach")).toBeVisible();
   });
 
   test("research minds are visible but cannot enter production councils", async ({ page }) => {

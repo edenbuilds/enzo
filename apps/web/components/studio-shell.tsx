@@ -5,13 +5,10 @@ import { EnzoPuppy } from "@enzo/design-system";
 
 const links = [
   ["/home", "Company home"],
+  ["/workrooms/new" as Route, "Start new work"],
+  ["/decisions/demo", "Open decision"],
+  ["/artifacts", "Work and artifacts"],
   ["/company", "Company memory"],
-  ["/workrooms" as Route, "Workrooms"],
-  ["/minds" as Route, "Minds"],
-  ["/styles" as Route, "Styles"],
-  ["/decisions/demo", "Decision room"],
-  ["/research", "Research board"],
-  ["/artifacts", "Artifacts"],
   ["/ledger", "Decision ledger"],
 ] as const satisfies ReadonlyArray<readonly [Route, string]>;
 

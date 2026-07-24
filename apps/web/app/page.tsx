@@ -1,12 +1,14 @@
 import Link from "next/link";
 import type { Route } from "next";
+import { MIND_PACKS, STYLE_PACKS, WORKROOMS } from "@enzo/decision-core";
 import { EnzoPuppy } from "@enzo/design-system";
 import { Nav } from "@/components/nav";
+import { WorkroomComposer } from "@/components/workroom-composer";
 
-const choices = [
-  ["Mind", "Choose the perspective", "Start with Jobs for product focus, Hormozi for offers, or let Enzo recommend a small council."],
-  ["Workroom", "Choose the outcome", "Move from strategy to design, marketing, sales, experience audit, or Forward Deployed Engineering."],
-  ["Style", "Choose the expression", "Shape the generated site, campaign, memo, or prototype without changing Enzo’s own identity."],
+const steps = [
+  ["Bring the knot", "Tell Enzo what feels stuck. Add a link if the evidence is public."],
+  ["See the first read", "Enzo names the decision underneath the request and shows what it needs to verify."],
+  ["Make the call", "Review the evidence, change the approach if needed, then approve the work."],
 ];
 
 export default function Home() {
@@ -15,33 +17,28 @@ export default function Home() {
       <section className="hero hero--broadsheet">
         <Nav />
         <div className="hero__content hero__content--broadsheet">
-          <div className="hero__copy">
+          <div className="hero__copy hero__copy--value-first">
             <p className="eyebrow">Founder operating system</p>
-            <h1>Enzo finds what matters. You make the call.</h1>
+            <h1>Bring the knot. Enzo finds the next move.</h1>
             <p className="hero__lede">
-              Bring Enzo a real company decision. Choose the minds you trust, the workroom you need,
-              and the style that fits. Enzo keeps the evidence visible and turns your choice into work.
+              Show Enzo the decision, product, or problem that is slowing you down. Get a clear first read before you configure anything.
             </p>
-            <div className="hero__actions">
-              <Link className="button button--accent" href={"/workrooms/new" as Route}>Start a workroom</Link>
-              <Link className="button button--secondary" href="/home">Explore the public demo</Link>
-            </div>
+            <WorkroomComposer embedded workrooms={WORKROOMS} minds={MIND_PACKS} styles={STYLE_PACKS} />
           </div>
           <div className="hero-puppy">
-            <span className="hero-puppy__note">Listening for the real question</span>
+            <span className="hero-puppy__note">Good at finding the question under the question.</span>
             <EnzoPuppy state="investigating" />
           </div>
         </div>
       </section>
 
       <section className="choice-section" id="method">
-        <p className="eyebrow">You choose the composition</p>
-        <h2>One company. Many useful ways to think.</h2>
+        <p className="eyebrow">Three steps to useful</p>
+        <h2>Less setup. More signal.</h2>
         <div className="choice-grid">
-          {choices.map(([label, title, copy], index) => (
-            <article className="choice-card" key={label}>
+          {steps.map(([title, copy], index) => (
+            <article className="choice-card" key={title}>
               <span className="choice-card__index">0{index + 1}</span>
-              <p className="eyebrow">{label}</p>
               <h3>{title}</h3>
               <p>{copy}</p>
             </article>
@@ -74,8 +71,8 @@ export default function Home() {
         <EnzoPuppy state="waiting" />
         <div>
           <p className="eyebrow">Your company stays yours</p>
-          <h2>Choose the minds. See the disagreement. Keep the final say.</h2>
-          <Link className="button button--accent" href={"/workrooms/new" as Route}>Compose your first workroom</Link>
+          <h2>Enzo brings the evidence. You keep the final say.</h2>
+          <Link className="button button--accent" href={"/workrooms/new" as Route}>Bring Enzo a real problem</Link>
         </div>
       </section>
     </main>

@@ -10,9 +10,8 @@ export function Nav({ compact = false }: { compact?: boolean }) {
         <b>Enzo</b>
       </Link>
       <div className="nav__links">
-        <Link href={"/workrooms" as Route}>Workrooms</Link>
-        <Link href={"/minds" as Route}>Minds</Link>
-        <Link href={"/styles" as Route}>Styles</Link>
+        <Link href={"/decisions/demo" as Route}>Worked example</Link>
+        <Link href={"/workrooms/forward-deployed-engineering" as Route}>Engineering</Link>
         <Link className="nav__cta" href="/api/auth/signin">
           Enter workspace
         </Link>
