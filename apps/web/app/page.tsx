@@ -1,14 +1,11 @@
-import Link from "next/link";
-import type { Route } from "next";
-import { MIND_PACKS, STYLE_PACKS, WORKROOMS } from "@enzo/decision-core";
 import { EnzoPuppy } from "@enzo/design-system";
 import { Nav } from "@/components/nav";
 import { WorkroomComposer } from "@/components/workroom-composer";
 
 const steps = [
-  ["Bring the knot", "Tell Enzo what feels stuck. Add a link if the evidence is public."],
-  ["See the first read", "Enzo names the decision underneath the request and shows what it needs to verify."],
-  ["Make the call", "Review the evidence, change the approach if needed, then approve the work."],
+  ["Give Enzo the page", "Paste any public HTTPS page. No account, crawl setup, or persona selection."],
+  ["See what is actually there", "Enzo extracts the real headline, actions, navigation, metadata, and page structure."],
+  ["Fix the first break", "Get evidence-linked findings and one concrete move you can make now."],
 ];
 
 export default function Home() {
@@ -18,23 +15,23 @@ export default function Home() {
         <Nav />
         <div className="hero__content hero__content--broadsheet">
           <div className="hero__copy hero__copy--value-first">
-            <p className="eyebrow">Founder operating system</p>
-            <h1>Bring the knot. Enzo finds the next move.</h1>
+            <p className="eyebrow">A ruthless first read for your homepage</p>
+            <h1>Your page is making a promise. Enzo finds where it breaks.</h1>
             <p className="hero__lede">
-              Show Enzo the decision, product, or problem that is slowing you down. Get a clear first read before you configure anything.
+              Paste the live URL. Enzo reads what customers can actually see, points to the evidence, and tells you what to fix first.
             </p>
-            <WorkroomComposer embedded workrooms={WORKROOMS} minds={MIND_PACKS} styles={STYLE_PACKS} />
+            <div id="interrogate"><WorkroomComposer embedded /></div>
           </div>
           <div className="hero-puppy">
-            <span className="hero-puppy__note">Good at finding the question under the question.</span>
+            <span className="hero-puppy__note">Good at sniffing out unclear promises.</span>
             <EnzoPuppy state="investigating" />
           </div>
         </div>
       </section>
 
-      <section className="choice-section" id="method">
-        <p className="eyebrow">Three steps to useful</p>
-        <h2>Less setup. More signal.</h2>
+      <section className="choice-section" id="how-it-works">
+        <p className="eyebrow">One page in, one priority out</p>
+        <h2>No council. No setup ritual. No generic advice.</h2>
         <div className="choice-grid">
           {steps.map(([title, copy], index) => (
             <article className="choice-card" key={title}>
@@ -46,33 +43,30 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="velvet-chamber">
+      <section className="velvet-chamber velvet-chamber--proof" id="proof">
         <div>
-          <p className="eyebrow">Primary workroom</p>
-          <h2>Forward Deployed Engineering connects the decision to production.</h2>
+          <p className="eyebrow">Why this is useful</p>
+          <h2>Enzo has to show its receipts.</h2>
           <p>
-            Enzo inspects the codebase, scopes the change, asks before touching consequential state,
-            verifies the result, and asks again before deployment.
+            Every finding starts with something observed on the live page. If Enzo cannot see it, Enzo does not pretend to know it.
           </p>
-          <Link className="button button--accent" href={"/workrooms/forward-deployed-engineering" as Route}>
-            Open the engineering workroom
-          </Link>
+          <a className="button button--accent" href="#interrogate">Interrogate your page</a>
         </div>
-        <ol className="approval-sequence">
-          <li><span>01</span>Inspect and frame</li>
-          <li><span>02</span>Approve the change</li>
-          <li><span>03</span>Build and verify</li>
-          <li><span>04</span>Approve deployment</li>
-          <li><span>05</span>Review the outcome</li>
-        </ol>
+        <div className="proof-receipt">
+          <p className="eyebrow">Evidence receipt</p>
+          <div><span>Observed</span><strong>Headline, actions, navigation, metadata</strong></div>
+          <div><span>Interpreted</span><strong>Where clarity or confidence breaks</strong></div>
+          <div><span>Recommended</span><strong>One move, tied to the observation</strong></div>
+          <div><span>Not claimed</span><strong>Private flows, customer intent, or conversion data</strong></div>
+        </div>
       </section>
 
       <section className="closing-cta closing-cta--broadsheet">
         <EnzoPuppy state="waiting" />
         <div>
-          <p className="eyebrow">Your company stays yours</p>
-          <h2>Enzo brings the evidence. You keep the final say.</h2>
-          <Link className="button button--accent" href={"/workrooms/new" as Route}>Bring Enzo a real problem</Link>
+          <p className="eyebrow">Try the product, not a tour</p>
+          <h2>One live page. One blunt read. One place to start.</h2>
+          <a className="button button--accent" href="#interrogate">Interrogate your page</a>
         </div>
       </section>
     </main>

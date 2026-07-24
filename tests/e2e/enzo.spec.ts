@@ -1,14 +1,41 @@
 import { expect, test } from "@playwright/test";
 
+const publicAuditFixture = {
+  url: "https://acme.test/",
+  capturedAt: "2026-07-24T10:00:00.000Z",
+  observed: {
+    title: "Acme",
+    description: "Build better products",
+    h1: ["Everything you need to grow"],
+    headings: ["Everything you need to grow"],
+    actions: ["Start free", "Book a demo", "Contact sales", "Try now", "Get access"],
+    navigation: ["Product", "Solutions", "Pricing", "Resources"],
+    proof: [],
+    forms: 1,
+    wordCount: 420,
+  },
+  verdict: "acme.test leads with “Everything you need to grow”. The most consequential issue found is the page asks for too many different next steps.",
+  nextMove: "Choose one primary action and make its value explicit.",
+  findings: [{
+    severity: "important",
+    title: "The page asks for too many different next steps",
+    observation: "Five competing action labels were detected.",
+    whyItMatters: "Competing actions force the visitor to understand the site before choosing a path.",
+    move: "Choose one primary action and make its value explicit.",
+  }],
+};
+
 test.describe("Enzo public experience", () => {
   test("landing page leads into the decision studio", async ({ page }) => {
+    await page.route("**/api/public-audit", (route) => route.fulfill({ json: publicAuditFixture }));
     await page.goto("/");
     await expect(page).toHaveTitle(/Enzo/);
-    await expect(page.getByRole("heading", { name: "Bring the knot. Enzo finds the next move." })).toBeVisible();
-    await page.getByTestId("composer-outcome").fill("Our trial users like the product but do not convert. What should we fix first?");
+    await expect(page.getByRole("heading", { name: /Your page is making a promise/i })).toBeVisible();
+    await page.getByTestId("audit-url").fill("https://acme.test");
+    await page.getByTestId("composer-outcome").fill("Improve conversion");
     await page.getByTestId("get-first-read").click();
-    await expect(page.getByTestId("first-read")).toContainText("What is the one choice");
-    await expect(page.getByTestId("first-read")).toContainText("Product and Strategy");
+    await expect(page.getByTestId("first-read")).toContainText("Everything you need to grow");
+    await expect(page.getByTestId("first-read")).toContainText("Five competing action labels");
   });
 
   test("intake reaches the evidence-backed report", async ({ page }) => {
@@ -75,14 +102,16 @@ test.describe("Enzo public experience", () => {
     await expect(page.getByText(/Outcome recorded\. This decision/i)).toBeVisible();
   });
 
-  test("founder gets value before adjusting the workroom", async ({ page }) => {
+  test("founder gets an evidence-linked diagnosis from a live page", async ({ page }) => {
+    await page.route("**/api/public-audit", (route) => route.fulfill({ json: publicAuditFixture }));
     await page.goto("/workrooms/new");
     await expect(page.getByTestId("workroom-composer")).toBeVisible();
-    await page.getByTestId("composer-outcome").fill("Ship a tested fix for the signup bug to production");
+    await page.getByTestId("audit-url").fill("https://acme.test");
+    await page.getByTestId("composer-outcome").fill("Make the product easier to understand");
     await page.getByTestId("get-first-read").click();
-    await expect(page.getByTestId("first-read")).toContainText("smallest production change");
-    await expect(page.getByTestId("first-read")).toContainText("Forward Deployed Engineering");
-    await expect(page.getByText("Adjust Enzo's approach")).toBeVisible();
+    await expect(page.getByTestId("first-read")).toContainText("Proof signals");
+    await expect(page.getByTestId("first-read")).toContainText("Do this first");
+    await expect(page.getByTestId("first-read")).toContainText("Based on the HTML delivered by acme.test");
   });
 
   test("research minds are visible but cannot enter production councils", async ({ page }) => {

@@ -1,207 +1,154 @@
 "use client";
 
-import Link from "next/link";
-import { useMemo, useState } from "react";
-import type { MindPack, StylePack, WorkroomDefinition } from "@enzo/decision-core";
+import { useState } from "react";
 import { EnzoPuppy } from "@enzo/design-system";
+import type { PublicAuditResult } from "@/lib/public-audit";
 
-type FirstRead = {
-  workroomId: string;
-  decision: string;
-  signal: string;
-  checks: string[];
-};
+export function WorkroomComposer({ embedded = false }: { embedded?: boolean }) {
+  const [problem, setProblem] = useState("");
+  const [url, setUrl] = useState("");
+  const [result, setResult] = useState<PublicAuditResult | null>(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-function makeFirstRead(outcome: string): FirstRead {
-  const text = outcome.toLowerCase();
-  if (/code|build|ship|deploy|repo|bug|technical|engineering/.test(text)) {
-    return {
-      workroomId: "forward-deployed-engineering",
-      decision: "What is the smallest production change that proves this outcome?",
-      signal: "You may be treating implementation as the goal. The real decision is which bounded change earns enough evidence to justify shipping.",
-      checks: ["Current product behavior", "Repository and deployment constraints", "A measurable acceptance test"],
-    };
-  }
-  if (/brand|design|visual|website|interface|ux|ui/.test(text)) {
-    return {
-      workroomId: "design-brand",
-      decision: "What must a customer understand and feel before the visual direction can be right?",
-      signal: "A visual refresh will not fix an unclear promise. Enzo should lock the audience, message, and proof before choosing an expression.",
-      checks: ["The promise above the fold", "The proof customers can verify", "The moments where the experience loses confidence"],
-    };
-  }
-  if (/sell|sales|offer|price|pricing|close|pipeline/.test(text)) {
-    return {
-      workroomId: "sales-offers",
-      decision: "Which promise, proof, and price make the next buyer say yes?",
-      signal: "The offer needs one measurable outcome and a believable reason to act now. More features will not substitute for proof.",
-      checks: ["The buyer's urgent job", "Proof behind the promise", "Price and risk reversal"],
-    };
-  }
-  if (/market|growth|campaign|launch|acquisition|content/.test(text)) {
-    return {
-      workroomId: "marketing-growth",
-      decision: "Which story and channel can create the fastest credible learning loop?",
-      signal: "A broad campaign is likely premature. Enzo should isolate one audience, one claim, and one observable response.",
-      checks: ["Audience urgency", "A claim the product can prove", "The shortest measurable channel test"],
-    };
-  }
-  return {
-    workroomId: "product-strategy",
-    decision: "What is the one choice that makes the next thirty days easier to execute?",
-    signal: "The outcome is still broad. Enzo should turn it into a reversible founder decision with a success measure and a review date.",
-    checks: ["What is already true", "What is still assumed", "What result would change the decision"],
-  };
-}
-
-export function WorkroomComposer({
-  workrooms,
-  minds,
-  styles,
-  embedded = false,
-}: {
-  workrooms: WorkroomDefinition[];
-  minds: MindPack[];
-  styles: StylePack[];
-  embedded?: boolean;
-}) {
-  const [outcome, setOutcome] = useState(embedded ? "" : "Decide what this product should promise first");
-  const [source, setSource] = useState("");
-  const [firstRead, setFirstRead] = useState<FirstRead | null>(null);
-  const [workroomId, setWorkroomId] = useState("product-strategy");
-  const [mindIds, setMindIds] = useState<string[]>(["steve-jobs", "charlie-munger"]);
-  const [styleId, setStyleId] = useState("broadsheet-editorial");
-
-  const workroom = workrooms.find((item) => item.id === workroomId) ?? workrooms[0]!;
-  const compatibleMinds = useMemo(
-    () => minds.filter((mind) => workroom.compatibleMindIds.includes(mind.id)),
-    [minds, workroom],
-  );
-
-  function inspect() {
-    const read = makeFirstRead(outcome);
-    const nextWorkroom = workrooms.find((item) => item.id === read.workroomId) ?? workrooms[0]!;
-    const recommended = minds
-      .filter((mind) => nextWorkroom.compatibleMindIds.includes(mind.id) && mind.evaluationStatus === "production")
-      .slice(0, 2)
-      .map((mind) => mind.id);
-    setWorkroomId(nextWorkroom.id);
-    setMindIds(recommended.length ? recommended : nextWorkroom.compatibleMindIds.slice(0, 2));
-    setFirstRead(read);
+  async function inspect() {
+    setLoading(true);
+    setError("");
+    setResult(null);
+    try {
+      const response = await fetch("/api/public-audit", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ url, problem }),
+      });
+      const payload = (await response.json()) as PublicAuditResult | { error: string };
+      if (!response.ok || "error" in payload) {
+        throw new Error("error" in payload ? payload.error : "The page could not be inspected.");
+      }
+      setResult(payload);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The page could not be inspected.");
+    } finally {
+      setLoading(false);
+    }
   }
 
-  function chooseWorkroom(id: string) {
-    const next = workrooms.find((item) => item.id === id);
-    if (!next) return;
-    setWorkroomId(id);
-    setMindIds(
-      minds
-        .filter((mind) => next.compatibleMindIds.includes(mind.id) && mind.evaluationStatus === "production")
-        .slice(0, 2)
-        .map((mind) => mind.id),
+  async function copyDiagnosis() {
+    if (!result) return;
+    const findings = result.findings
+      .map((finding, index) => `${index + 1}. ${finding.title}\nObserved: ${finding.observation}\nMove: ${finding.move}`)
+      .join("\n\n");
+    await navigator.clipboard.writeText(
+      `Enzo page diagnosis\n${result.url}\n\n${result.verdict}\n\nNext move\n${result.nextMove}\n\n${findings}`,
     );
-  }
-
-  function toggleMind(id: string) {
-    setMindIds((current) =>
-      current.includes(id) ? current.filter((item) => item !== id) : current.length < 3 ? [...current, id] : current,
-    );
+    setCopied(true);
   }
 
   return (
     <div className={embedded ? "first-start first-start--embedded" : "first-start"} data-testid="workroom-composer">
       <div className="first-start__input">
         <div>
-          <p className="eyebrow">Start here</p>
-          <h2>{embedded ? "What feels stuck?" : "Tell Enzo what you need to decide or ship."}</h2>
-          <p>Plain language is enough. Enzo will choose a useful starting method and show you why.</p>
+          <p className="eyebrow">Public page interrogation</p>
+          <h2>{embedded ? "Show Enzo the page." : "Find the first thing worth fixing."}</h2>
+          <p>Enzo reads the page that is live now, shows the evidence it found, and names one move to make first.</p>
         </div>
+        <label className="field first-start__source">
+          <span>Public HTTPS page</span>
+          <input
+            type="url"
+            value={url}
+            onChange={(event) => { setUrl(event.target.value); setResult(null); }}
+            placeholder="https://your-product.com"
+            required
+            data-testid="audit-url"
+          />
+        </label>
         <label className="field">
-          <span>Decision or outcome</span>
+          <span>What are you trying to improve? <small>Optional</small></span>
           <textarea
-            value={outcome}
-            onChange={(event) => { setOutcome(event.target.value); setFirstRead(null); }}
-            placeholder="Example: Our trial users like the product, but they do not convert. What should we fix first?"
+            value={problem}
+            onChange={(event) => { setProblem(event.target.value); setResult(null); }}
+            placeholder="Example: More qualified founders should start a trial."
             data-testid="composer-outcome"
           />
         </label>
-        <label className="field first-start__source">
-          <span>Link or evidence <small>Optional</small></span>
-          <input
-            type="url"
-            value={source}
-            onChange={(event) => setSource(event.target.value)}
-            placeholder="https://your-product.com"
-          />
-        </label>
-        <button className="button button--accent" disabled={!outcome.trim()} onClick={inspect} data-testid="get-first-read">
-          Get Enzo&apos;s first read
-        </button>
-        <small className="first-start__privacy">Public demo. Your entry is processed in this browser and is not saved.</small>
+        <div className="first-start__actions">
+          <button className="button button--accent" disabled={!url.trim() || loading} onClick={inspect} data-testid="get-first-read">
+            {loading ? "Inspecting the live page..." : "Interrogate this page"}
+          </button>
+          <button
+            className="text-button"
+            type="button"
+            onClick={() => {
+              setUrl("https://tryenzo.vercel.app");
+              setProblem("Make the value obvious enough that a founder wants to try it.");
+              setResult(null);
+            }}
+          >
+            Use Enzo as the example
+          </button>
+        </div>
+        {error ? <p className="first-start__error" role="alert">{error}</p> : null}
+        <small className="first-start__privacy">Public pages only. Enzo does not sign in, submit forms, or save this audit.</small>
       </div>
 
-      {firstRead ? (
-        <section className="first-read" aria-live="polite" data-testid="first-read">
+      {result ? (
+        <section className="first-read first-read--audit" aria-live="polite" data-testid="first-read">
           <header>
             <div>
-              <p className="eyebrow">Enzo&apos;s first read</p>
-              <h2>{firstRead.decision}</h2>
+              <p className="eyebrow">The blunt read</p>
+              <h2>{result.verdict}</h2>
             </div>
             <EnzoPuppy state="bringing-evidence" />
           </header>
-          <div className="first-read__body">
-            <div className="first-read__signal">
-              <p className="eyebrow">The signal</p>
-              <p>{firstRead.signal}</p>
+
+          <div className="audit-evidence">
+            <div>
+              <span className="eyebrow">Proof signals</span>
+              <strong>{result.observed.proof.length}</strong>
+              <small>{result.observed.proof[0] || "None detected"}</small>
             </div>
             <div>
-              <p className="eyebrow">What Enzo would check next</p>
-              <ol>{firstRead.checks.map((check) => <li key={check}>{check}</li>)}</ol>
+              <span className="eyebrow">Primary heading</span>
+              <strong>{result.observed.h1[0] || "Not found"}</strong>
             </div>
-          </div>
-          <div className="first-read__route">
             <div>
-              <span className="eyebrow">Recommended route</span>
-              <strong>{workroom.displayName}</strong>
-              <span>{mindIds.map((id) => minds.find((mind) => mind.id === id)?.displayName).filter(Boolean).join(" + ")}</span>
+              <span className="eyebrow">Actions found</span>
+              <strong>{result.observed.actions.length}</strong>
+              <small>{result.observed.actions.slice(0, 3).join(" · ") || "None detected"}</small>
             </div>
-            <Link className="button button--accent" href="/decisions/demo">See the full worked example</Link>
+            <div>
+              <span className="eyebrow">Navigation items</span>
+              <strong>{result.observed.navigation.length}</strong>
+              <small>{result.observed.navigation.slice(0, 4).join(" · ") || "None detected"}</small>
+            </div>
           </div>
 
-          <details className="approach-controls">
-            <summary>Adjust Enzo&apos;s approach</summary>
-            <p>Only change these if you have a reason. Enzo has already selected a safe default.</p>
-            <fieldset>
-              <legend>Workroom</legend>
-              <div className="approach-controls__grid">
-                {workrooms.map((item) => (
-                  <label key={item.id} className={item.id === workroomId ? "approach-option approach-option--active" : "approach-option"}>
-                    <input type="radio" name="workroom" checked={item.id === workroomId} onChange={() => chooseWorkroom(item.id)} />
-                    <strong>{item.displayName}</strong><span>{item.summary}</span>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend>Perspectives</legend>
-              <div className="approach-controls__grid">
-                {compatibleMinds.map((mind) => (
-                  <label key={mind.id} className={mindIds.includes(mind.id) ? "approach-option approach-option--active" : "approach-option"}>
-                    <input type="checkbox" checked={mindIds.includes(mind.id)} disabled={mind.evaluationStatus !== "production"} onChange={() => toggleMind(mind.id)} />
-                    <strong>{mind.displayName}</strong><span>{mind.competence.slice(0, 2).join(" + ")}</span>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-            {workroom.supportsStyles ? (
-              <label className="field">
-                <span>Output style</span>
-                <select value={styleId} onChange={(event) => setStyleId(event.target.value)}>
-                  {styles.map((style) => <option value={style.id} key={style.id}>{style.displayName}</option>)}
-                </select>
-              </label>
-            ) : null}
-          </details>
+          <div className="audit-findings">
+            <div className="audit-findings__heading">
+              <p className="eyebrow">What breaks confidence</p>
+              <span>{result.findings.length} evidence-linked finding{result.findings.length === 1 ? "" : "s"}</span>
+            </div>
+            {result.findings.map((finding, index) => (
+              <article key={finding.title}>
+                <span className={`audit-severity audit-severity--${finding.severity}`}>0{index + 1} · {finding.severity}</span>
+                <h3>{finding.title}</h3>
+                <p><b>Observed:</b> {finding.observation}</p>
+                <p><b>Why it matters:</b> {finding.whyItMatters}</p>
+                <div><span className="eyebrow">Make this move</span><p>{finding.move}</p></div>
+              </article>
+            ))}
+          </div>
+
+          <div className="first-read__route">
+            <div>
+              <span className="eyebrow">Do this first</span>
+              <strong>{result.nextMove}</strong>
+              <span>Based on the HTML delivered by {new URL(result.url).hostname}.</span>
+            </div>
+            <button className="button button--accent" onClick={copyDiagnosis}>{copied ? "Diagnosis copied" : "Copy the diagnosis"}</button>
+          </div>
         </section>
       ) : null}
     </div>

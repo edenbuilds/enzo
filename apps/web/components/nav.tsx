@@ -1,5 +1,4 @@
 import Link from "next/link";
-import type { Route } from "next";
 import { EnzoPuppy } from "@enzo/design-system";
 
 export function Nav({ compact = false }: { compact?: boolean }) {
@@ -10,10 +9,10 @@ export function Nav({ compact = false }: { compact?: boolean }) {
         <b>Enzo</b>
       </Link>
       <div className="nav__links">
-        <Link href={"/decisions/demo" as Route}>Worked example</Link>
-        <Link href={"/workrooms/forward-deployed-engineering" as Route}>Engineering</Link>
+        <Link href="/#how-it-works">How it works</Link>
+        <Link href="/#proof">Why Enzo</Link>
         <Link className="nav__cta" href="/api/auth/signin">
-          Enter workspace
+          Private beta
         </Link>
       </div>
     </nav>
