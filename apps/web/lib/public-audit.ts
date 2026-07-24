@@ -74,7 +74,7 @@ export function extractPublicEvidence(htmlInput: string) {
     ...matches(withoutNoise, /<button\b[^>]*>([\s\S]*?)<\/button>/gi, 30),
     ...matches(withoutNoise, /<a\b[^>]*>([\s\S]*?)<\/a>/gi, 80),
   ]).filter((label) => label.length >= 2 && label.length <= 80);
-  const actionPattern = /\b(get|start|try|book|buy|join|contact|request|sign|see|open|create|launch|download|subscribe|apply|talk)\b/i;
+  const actionPattern = /\b(get|start|try|book|buy|join|contact|request|sign|see|open|create|launch|download|subscribe|apply|talk|interrogate|audit|analyze|inspect)\b/i;
   const actions = allControls.filter((label) => actionPattern.test(label)).slice(0, 12);
   const navHtml = withoutNoise.match(/<nav\b[^>]*>([\s\S]*?)<\/nav>/gi)?.join(" ") ?? "";
   const navigation = unique(matches(navHtml, /<a\b[^>]*>([\s\S]*?)<\/a>/gi, 30)).filter(

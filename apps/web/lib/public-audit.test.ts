@@ -6,11 +6,12 @@ describe("public audit", () => {
     const evidence = extractPublicEvidence(`
       <html><head><title>Acme</title><meta name="description" content="Ship better widgets"></head>
       <body><nav><a href="/pricing">Pricing</a><a href="/about">About</a></nav>
-      <h1>Ship the right widget</h1><h2>Trusted by 200 teams</h2><a href="/start">Start free</a><form></form></body></html>
+      <h1>Ship the right widget</h1><h2>Trusted by 200 teams</h2><a href="/start">Start free</a><button>Interrogate this page</button><form></form></body></html>
     `);
     expect(evidence.title).toBe("Acme");
     expect(evidence.h1).toEqual(["Ship the right widget"]);
     expect(evidence.actions).toContain("Start free");
+    expect(evidence.actions).toContain("Interrogate this page");
     expect(evidence.navigation).toEqual(["Pricing", "About"]);
     expect(evidence.proof).toContain("Trusted by 200 teams");
     expect(evidence.forms).toBe(1);
